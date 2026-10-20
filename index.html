@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>ChanTan Kart — Five Worlds. Five Racers. One Trophy.</title>
+  <title>Kart Racer — Five Worlds. Five Racers. One Trophy.</title>
 
   <!-- 1. My PC SDK (Loaded before game code as required by the My PC Guide) -->
   <script src="https://imad-os.github.io/g/sdk/mypc-sdk.js"></script>
@@ -173,7 +173,7 @@
           ★ MY PC GRAND PRIX EDITION ★
         </div>
         <h1 class="font-display text-5xl sm:text-7xl md:text-8xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 via-amber-400 to-orange-500 text-stroke select-none leading-none">
-          CHANTAN KART
+          Kart Racer
         </h1>
         <p class="mt-2 sm:mt-3 text-base sm:text-2xl font-extrabold text-cyan-300 text-stroke-sm tracking-wide">
           Five worlds. Five racers. One trophy.
@@ -488,7 +488,7 @@
     <!-- =================================================================== -->
     <div id="modal-credits" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4 pointer-events-auto">
       <div class="toy-card rounded-3xl p-6 sm:p-8 max-w-lg w-full border-amber-400 text-center">
-        <h3 class="font-display text-3xl sm:text-4xl font-bold text-amber-300 text-stroke-sm mb-2">🏆 CHANTAN KART</h3>
+        <h3 class="font-display text-3xl sm:text-4xl font-bold text-amber-300 text-stroke-sm mb-2">🏆 Kart Racer KART</h3>
         <p class="text-sm font-bold text-cyan-300 mb-4">Five worlds. Five racers. One trophy.</p>
         <div class="bg-slate-900/90 border border-slate-700 rounded-2xl p-4 text-xs sm:text-sm text-slate-200 space-y-2 mb-6 text-left">
           <p><b>Platform:</b> Built exclusively for <b>My PC</b> (Samsung Smart TV Tizen 8/9, Browser & Phone)</p>
@@ -528,7 +528,7 @@
         sdk.storage = {
           get: function(key, defaultVal = null) {
             try {
-              const raw = localStorage.getItem('mypc_chantankart_' + key);
+              const raw = localStorage.getItem('mypc_Kart Racerkart_' + key);
               return raw !== null ? JSON.parse(raw) : defaultVal;
             } catch (e) {
               return defaultVal;
@@ -536,7 +536,7 @@
           },
           set: function(key, val) {
             try {
-              localStorage.setItem('mypc_chantankart_' + key, JSON.stringify(val));
+              localStorage.setItem('mypc_Kart Racerkart_' + key, JSON.stringify(val));
             } catch (e) {}
           }
         };
@@ -610,7 +610,7 @@
           } catch (e) {}
           // Also check localStorage mirror for instant sync availability
           try {
-            const local = localStorage.getItem('mypc_chantankart_' + k);
+            const local = localStorage.getItem('mypc_Kart Racerkart_' + k);
             if (local !== null && this.cache[k] === undefined) {
               this.cache[k] = JSON.parse(local);
             }
@@ -623,7 +623,7 @@
       set(key, value) {
         this.cache[key] = value;
         try {
-          localStorage.setItem('mypc_chantankart_' + key, JSON.stringify(value));
+          localStorage.setItem('mypc_Kart Racerkart_' + key, JSON.stringify(value));
         } catch (e) {}
         try {
           if (window.MyPC && window.MyPC.storage && typeof window.MyPC.storage.set === 'function') {
