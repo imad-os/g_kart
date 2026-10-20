@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- App Icon Clip Path -->
+    <clipPath id="icon-clip">
+      <rect width="512" height="512" rx="112" ry="112" />
+    </clipPath>
+
+    <!-- Background Sunset / Arcade Sky Gradient -->
+    <linearGradient id="bg-sky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1A0B3B" />
+      <stop offset="45%" stop-color="#5B166B" />
+      <stop offset="80%" stop-color="#E83845" />
+      <stop offset="100%" stop-color="#FF9E1B" />
+    </linearGradient>
+
+    <!-- Sun Glow Gradient -->
+    <linearGradient id="sun-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF36D" />
+      <stop offset="60%" stop-color="#FF981A" />
+      <stop offset="100%" stop-color="#FF2E63" />
+    </linearGradient>
+
+    <!-- Asphalt Track Gradient -->
+    <linearGradient id="road-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2B2D42" />
+      <stop offset="100%" stop-color="#12131F" />
+    </linearGradient>
+
+    <!-- Kart Red Body Gradient -->
+    <linearGradient id="kart-red" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF4B3E" />
+      <stop offset="55%" stop-color="#E01A22" />
+      <stop offset="100%" stop-color="#9B0A14" />
+    </linearGradient>
+
+    <!-- Kart Highlight Trim -->
+    <linearGradient id="kart-yellow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF05A" />
+      <stop offset="100%" stop-color="#FF9900" />
+    </linearGradient>
+
+    <!-- Chrome / Metal Gradient -->
+    <linearGradient id="metal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8F9FA" />
+      <stop offset="50%" stop-color="#ADB5BD" />
+      <stop offset="100%" stop-color="#495057" />
+    </linearGradient>
+
+    <!-- Tire Rubber Gradient -->
+    <linearGradient id="tire-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3A3D45" />
+      <stop offset="50%" stop-color="#1E2026" />
+      <stop offset="100%" stop-color="#0E0F12" />
+    </linearGradient>
+
+    <!-- Drift Boost Flame / Cyan-Gold -->
+    <linearGradient id="boost-cyan" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00F5D4" stop-opacity="0" />
+      <stop offset="40%" stop-color="#00BBF9" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#FFFFFF" />
+    </linearGradient>
+
+    <linearGradient id="flame-grad" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#FF2A85" stop-opacity="0" />
+      <stop offset="30%" stop-color="#FF6B00" />
+      <stop offset="70%" stop-color="#FFD600" />
+      <stop offset="100%" stop-color="#FFFFFF" />
+    </linearGradient>
+
+    <!-- Helmet / Visor Gradient -->
+    <linearGradient id="visor-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00F5D4" />
+      <stop offset="50%" stop-color="#0096C7" />
+      <stop offset="100%" stop-color="#03045E" />
+    </linearGradient>
+  </defs>
+
+  <g clip-path="url(#icon-clip)">
+    <!-- 1. Sky Background -->
+    <rect width="512" height="512" fill="url(#bg-sky)" />
+
+    <!-- 2. Retro Arcade Sun & Low-Poly Horizon Mountains -->
+    <circle cx="375" cy="145" r="92" fill="url(#sun-grad)" opacity="0.92" />
+    <!-- Sun Scanlines -->
+    <rect x="275" y="165" width="200" height="6" fill="#5B166B" opacity="0.5" />
+    <rect x="275" y="185" width="200" height="9" fill="#5B166B" opacity="0.6" />
+    <rect x="275" y="208" width="200" height="12" fill="#5B166B" opacity="0.7" />
+
+    <!-- Low-Poly Distant Peaks -->
+    <polygon points="-20,310 85,175 190,310" fill="#3B0D54" />
+    <polygon points="85,175 135,310 190,310" fill="#29073B" />
+    <polygon points="130,310 245,155 360,310" fill="#4A1259" />
+    <polygon points="245,155 295,310 360,310" fill="#310A40" />
+    <polygon points="310,310 435,195 540,310" fill="#3B0D54" />
+
+    <!-- 3. Dynamic Speed Lines in Sky -->
+    <polygon points="-20,85 195,120 -20,108" fill="#FFFFFF" opacity="0.18" />
+    <polygon points="-20,145 140,165 -20,160" fill="#00F5D4" opacity="0.25" />
+    <polygon points="410,35 530,10 530,32" fill="#FFF05A" opacity="0.3" />
+
+    <!-- 4. Curved Banking Race Track -->
+    <path d="M -40,285 Q 230,245 552,320 L 552,540 L -40,540 Z" fill="url(#road-grad)" />
+
+    <!-- Red & White Curbs (Left/Top Edge of Track) -->
+    <path d="M -40,285 Q 230,245 552,320 L 552,340 Q 230,265 -40,308 Z" fill="#FFFFFF" />
+    <polygon points="10,280 65,276 55,296 0,301" fill="#E01A22" />
+    <polygon points="120,273 175,272 168,292 112,293" fill="#E01A22" />
+    <polygon points="230,275 285,278 280,298 225,294" fill="#E01A22" />
+    <polygon points="340,284 395,292 390,312 335,304" fill="#E01A22" />
+    <polygon points="450,301 505,312 500,331 445,320" fill="#E01A22" />
+
+    <!-- Track Center Dashed Boost Line -->
+    <polygon points="20,445 110,415 128,432 32,468" fill="#FFD600" opacity="0.85" />
+    <polygon points="175,395 255,370 270,384 188,412" fill="#FFD600" opacity="0.85" />
+
+    <!-- 5. Drift Sparks & Turbo Exhaust Flames (Behind Kart) -->
+    <!-- Blue Drift Sparks Under Rear Tires -->
+    <polygon points="15,390 145,365 115,405" fill="url(#boost-cyan)" />
+    <polygon points="35,425 165,380 125,435" fill="url(#boost-cyan)" opacity="0.85" />
+    <circle cx="58" cy="398" r="6" fill="#00F5D4" />
+    <circle cx="38" cy="372" r="4.5" fill="#FFFFFF" />
+    <circle cx="82" cy="422" r="5" fill="#00BBF9" />
+
+    <!-- Twin Exhaust Boost Flames -->
+    <polygon points="8,295 142,272 132,318" fill="url(#flame-grad)" />
+    <polygon points="35,293 140,280 134,308" fill="#FFFFFF" opacity="0.9" />
+    <polygon points="25,332 152,302 142,344" fill="url(#flame-grad)" />
+    <polygon points="55,328 150,310 144,335" fill="#FFFFFF" opacity="0.9" />
+
+    <!-- 6. Floating Golden Star / Item Power-Up (Top Left) -->
+    <g transform="translate(88, 102) rotate(-14)">
+      <!-- Outer Glow -->
+      <circle cx="0" cy="0" r="42" fill="#FFD600" opacity="0.22" />
+      <!-- 5-Point Star -->
+      <polygon points="0,-36 11,-11 38,-8 18,10 23,36 0,22 -23,36 -18,10 -38,-8 -11,-11" fill="url(#kart-yellow)" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" />
+      <!-- Star Eyes -->
+      <ellipse cx="-7" cy="-2" rx="3" ry="6" fill="#1A0B3B" />
+      <ellipse cx="7" cy="-2" rx="3" ry="6" fill="#1A0B3B" />
+      <circle cx="-8" cy="-4" r="1.5" fill="#FFFFFF" />
+      <circle cx="6" cy="-4" r="1.5" fill="#FFFFFF" />
+    </g>
+
+    <!-- 7. KART & DRIVER (Centerpiece, tilted in an action drift) -->
+    <g transform="translate(270, 315) rotate(-6)">
+      <!-- Ground Drop Shadow under Kart -->
+      <ellipse cx="10" cy="92" rx="168" ry="34" fill="#070810" opacity="0.75" />
+
+      <!-- Dual Chrome Exhaust Pipes (Rear Left) -->
+      <polygon points="-152,-32 -105,-18 -112,4 -160,-10" fill="url(#metal-grad)" stroke="#1E2026" stroke-width="4" stroke-linejoin="round" />
+      <ellipse cx="-156" cy="-21" rx="6" ry="12" transform="rotate(16 -156 -21)" fill="#1E2026" />
+      <polygon points="-142,-2 -98,10 -105,30 -150,18" fill="url(#metal-grad)" stroke="#1E2026" stroke-width="4" stroke-linejoin="round" />
+      <ellipse cx="-146" cy="8" rx="6" ry="11" transform="rotate(16 -146 8)" fill="#1E2026" />
+
+      <!-- Rear Wing / Spoiler (#1) -->
+      <polygon points="-132,-68 -88,-68 -78,-22 -118,-22" fill="#1E2026" />
+      <polygon points="-148,-82 -72,-76 -62,-54 -138,-60" fill="url(#kart-red)" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" />
+
+      <!-- Far-Side Front Tire (Right-Top) -->
+      <g transform="translate(128, 12) rotate(-12)">
+        <rect x="-32" y="-38" width="64" height="76" rx="18" fill="url(#tire-grad)" stroke="#090A0F" stroke-width="4" />
+        <ellipse cx="8" cy="0" rx="14" ry="22" fill="url(#kart-yellow)" />
+      </g>
+
+      <!-- DRIVER (Chunky Toy Racer with Helmet, Goggles & Flowing Scarf) -->
+      <!-- Flowing Yellow/Orange Scarf -->
+      <path d="M -55,-45 Q -115,-65 -148,-42 Q -122,-22 -95,-25 Q -125,-8 -140,8 Q -98,12 -52,-25 Z" fill="url(#kart-yellow)" stroke="#9B0A14" stroke-width="3" stroke-linejoin="round" />
+
+      <!-- Driver Torso / Racing Suit -->
+      <path d="M -58,-42 C -58,-75 18,-75 24,-35 L 32,12 L -52,12 Z" fill="#FFFFFF" stroke="#1E2026" stroke-width="4" />
+      <!-- Red Racing Stripe on Suit -->
+      <polygon points="-22,-62 -4,-62 4,10 -16,10" fill="#E01A22" />
+
+      <!-- Steering Wheel & Hands -->
+      <line x1="32" y1="-22" x2="62" y2="8" stroke="#2B2D42" stroke-width="10" stroke-linecap="round" />
+      <ellipse cx="30" cy="-26" rx="12" ry="26" transform="rotate(24 30 -26)" fill="none" stroke="#1E2026" stroke-width="9" />
+      <!-- Driver Gloved Hand -->
+      <circle cx="24" cy="-24" r="12" fill="#FFD600" stroke="#1E2026" stroke-width="4" />
+
+      <!-- Driver Oversized Toy Helmet -->
+      <g transform="translate(-14, -95)">
+        <!-- Main Helmet Dome -->
+        <circle cx="0" cy="0" r="54" fill="#FFFFFF" stroke="#1E2026" stroke-width="5" />
+        <!-- Helmet Top Red Racing Stripe -->
+        <path d="M -28,-46 Q 0,-60 32,-42 L 22,-18 Q -2,-28 -20,-18 Z" fill="url(#kart-red)" />
+        <!-- Helmet Ear Pod -->
+        <circle cx="-24" cy="8" r="16" fill="url(#kart-red)" stroke="#1E2026" stroke-width="4" />
+        <circle cx="-24" cy="8" r="7" fill="#FFD600" />
+
+        <!-- Wide Cyan Racing Visor / Goggles -->
+        <path d="M -6,-20 C 28,-24 56,-12 56,10 C 56,28 26,34 -6,26 C -16,23 -18,-18 -6,-20 Z" fill="url(#visor-grad)" stroke="#1E2026" stroke-width="5" stroke-linejoin="round" />
+        <!-- Visor Gloss Highlight -->
+        <path d="M 4,-12 C 24,-14 42,-8 44,2 C 30,0 14,-2 2,-4 Z" fill="#FFFFFF" opacity="0.85" />
+      </g>
+
+      <!-- KART CHASSIS (Chunky Low-Poly Toy Aesthetic) -->
+      <!-- Main Lower Tub -->
+      <polygon points="-122,18 148,18 168,58 -108,64" fill="#1E2026" stroke="#090A0F" stroke-width="4" stroke-linejoin="round" />
+
+      <!-- Main Red Side Pod & Nose Cone -->
+      <path d="M -118,24 L -95,-26 L -22,-22 L 32,6 L 72,-28 L 156,16 L 166,48 L -112,52 Z" fill="url(#kart-red)" stroke="#1E2026" stroke-width="5" stroke-linejoin="round" />
+
+      <!-- Low-Poly Top Nose Facet (Lighter Red/Orange Highlight) -->
+      <polygon points="72,-28 156,16 118,24 32,6" fill="#FF7556" />
+
+      <!-- Yellow Lightning Side Trim -->
+      <polygon points="-98,10 12,14 8,32 -106,30" fill="url(#kart-yellow)" />
+      <polygon points="-4,14 135,24 142,38 18,34" fill="#FFFFFF" />
+
+      <!-- Front Number Badge ("1") on Nose -->
+      <ellipse cx="112" cy="4" rx="22" ry="14" transform="rotate(18 112 4)" fill="#FFFFFF" stroke="#1E2026" stroke-width="3.5" />
+      <!-- Pure Vector "1" -->
+      <polygon points="109,-4 117,-4 113,12 105,12" fill="#1E2026" />
+
+      <!-- Front Bumper Wing -->
+      <path d="M 132,32 L 182,26 L 188,54 L 124,58 Z" fill="url(#kart-yellow)" stroke="#1E2026" stroke-width="4" stroke-linejoin="round" />
+
+      <!-- NEAR-SIDE TIRES (Chunky Oversized Toy Wheels with Deep Rims) -->
+      <!-- Rear Tire (Big) -->
+      <g transform="translate(-82, 46)">
+        <rect x="-46" y="-44" width="92" height="88" rx="26" fill="url(#tire-grad)" stroke="#090A0F" stroke-width="5" />
+        <!-- Tire Tread Highlights -->
+        <path d="M -32,-38 L -12,-38 L -18,38 L -38,38 Z" fill="#FFFFFF" opacity="0.07" />
+        <!-- Deep Dish Gold Rim -->
+        <circle cx="4" cy="0" r="25" fill="url(#kart-yellow)" stroke="#1E2026" stroke-width="4" />
+        <circle cx="4" cy="0" r="11" fill="url(#metal-grad)" stroke="#1E2026" stroke-width="3" />
+      </g>
+
+      <!-- Front Tire (Turned slightly into the drift) -->
+      <g transform="translate(88, 52) rotate(-10)">
+        <rect x="-38" y="-38" width="76" height="76" rx="22" fill="url(#tire-grad)" stroke="#090A0F" stroke-width="5" />
+        <path d="M -24,-32 L -8,-32 L -14,32 L -30,32 Z" fill="#FFFFFF" opacity="0.07" />
+        <circle cx="4" cy="0" r="20" fill="url(#kart-yellow)" stroke="#1E2026" stroke-width="4" />
+        <circle cx="4" cy="0" r="9" fill="url(#metal-grad)" stroke="#1E2026" stroke-width="3" />
+      </g>
+    </g>
+
+    <!-- 8. Foreground Action Speed Lines & Checkered Corner Ribbon -->
+    <polygon points="340,485 512,425 512,512" fill="#00F5D4" opacity="0.22" />
+    <polygon points="395,512 512,465 512,512" fill="#FFF05A" opacity="0.35" />
+
+    <!-- Inner Glossy Squircle Frame Border -->
+    <rect x="6" y="6" width="500" height="500" rx="106" ry="106" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.16" />
+  </g>
+</svg>
