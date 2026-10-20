@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Kart Racer</title>
   <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="manifest" href="manifest.json" />
   <!-- 1. MUST load My PC SDK first before any application code; never copy into repo -->
   <script src="https://imad-os.github.io/g/sdk/mypc-sdk.js"></script>
-  <!-- Three.js r128 for lightweight flat-shaded low-poly 3D -->
+  <!-- 2. Three.js r128 for lightweight flat-shaded low-poly 3D -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
     :root {
@@ -374,6 +375,8 @@
       justify-content: center;
       box-shadow: 0 8px 0 rgba(0, 0, 0, 0.65);
       transition: transform 0.12s ease;
+      pointer-events: auto;
+      cursor: pointer;
     }
 
     .item-roulette.has-item {
@@ -709,9 +712,11 @@
       'use strict';
 
       // =========================================================================
-      // 1. MYPC SDK INTEGRATION (Strictly respects MyPC lifecycle & APIs)
+      // 1. IMMEDIATE SYNCHRONOUS MYPC SDK HANDSHAKE & UNIVERSAL INPUT BRIDGE
+      // Signals readiness immediately so the My PC host container never times out.
       // =========================================================================
       const MyPCBridge = {
+        initialized: false,
         state: {
           up: false,
           down: false,
@@ -730,26 +735,56 @@
           ly: 0
         },
 
-        async init() {
+        bootImmediate() {
+          if (this.initialized) return;
+          this.initialized = true;
+
           const mp = window.MyPC;
+          const appConfig = {
+            id: 'g_kart',
+            appId: 'kart-racer',
+            name: 'Kart Racer',
+            title: 'Kart Racer',
+            type: 'game',
+            category: 'game',
+            version: '1.0.0',
+            icon: 'icon.svg'
+          };
+
           if (mp) {
             try {
+              // 1. Call MyPC.init(...) if provided
               if (typeof mp.init === 'function') {
-                await mp.init({
-                  id: 'kart-racer',
-                  name: 'Kart Racer',
-                  category: 'game',
-                  version: '1.2.0'
-                });
+                const initResult = mp.init(appConfig);
+                if (initResult && typeof initResult.then === 'function') {
+                  initResult.then(() => {
+                    if (typeof mp.ready === 'function') mp.ready();
+                  }).catch(() => {});
+                }
               }
 
-              // Bind MyPC.gamepad callbacks
+              // 2. Call MyPC.ready() immediately so the host reveals the window
+              if (typeof mp.ready === 'function') {
+                mp.ready(appConfig);
+              }
+
+              // 3. Bind MyPC.gamepad listeners (supporting all SDK event patterns)
               if (mp.gamepad) {
                 if (typeof mp.gamepad.onButtonDown === 'function') {
                   mp.gamepad.onButtonDown((btn) => this.onSignal(btn, true));
                 }
                 if (typeof mp.gamepad.onButtonUp === 'function') {
                   mp.gamepad.onButtonUp((btn) => this.onSignal(btn, false));
+                }
+                if (typeof mp.gamepad.on === 'function') {
+                  mp.gamepad.on('buttonDown', (e) => this.onSignal(e, true));
+                  mp.gamepad.on('buttonUp', (e) => this.onSignal(e, false));
+                  mp.gamepad.on('down', (e) => this.onSignal(e, true));
+                  mp.gamepad.on('up', (e) => this.onSignal(e, false));
+                  mp.gamepad.on('press', (e) => {
+                    this.onSignal(e, true);
+                    setTimeout(() => this.onSignal(e, false), 90);
+                  });
                 }
                 if (typeof mp.gamepad.onAxis === 'function') {
                   mp.gamepad.onAxis((axis) => {
@@ -759,7 +794,7 @@
                 }
               }
 
-              // Bind MyPC.input callbacks if present
+              // 4. Bind MyPC.input listeners (supporting callback or event emitter)
               if (mp.input) {
                 if (typeof mp.input.onKeyDown === 'function') {
                   mp.input.onKeyDown((k) => this.onSignal(k, true));
@@ -768,27 +803,38 @@
                   mp.input.onKeyUp((k) => this.onSignal(k, false));
                 }
                 if (typeof mp.input.onAction === 'function') {
-                  mp.input.onAction((act, pressed) => this.onSignal(act, pressed !== false));
+                  mp.input.onAction((act, down) => this.onSignal(act, down !== false));
+                }
+                if (typeof mp.input.on === 'function') {
+                  try {
+                    // Some SDK versions take (callback), others take ('event', callback)
+                    mp.input.on((ev) => {
+                      if (!ev) return;
+                      const isUp = ev.type === 'keyup' || ev.type === 'up' || ev.pressed === false || ev.down === false;
+                      this.onSignal(ev, !isUp);
+                    });
+                    mp.input.on('keydown', (e) => this.onSignal(e, true));
+                    mp.input.on('keyup', (e) => this.onSignal(e, false));
+                    mp.input.on('action', (e) => this.onSignal(e, true));
+                  } catch (e) {}
                 }
               }
 
               if (typeof mp.onKey === 'function') {
                 mp.onKey((k, down) => this.onSignal(k, down !== false));
               }
-
-              // Tell My PC host that the app is ready to display and receive input
-              if (typeof mp.ready === 'function') {
-                mp.ready();
-              }
-            } catch (e) {
-              console.warn('MyPC SDK init note:', e);
+            } catch (err) {
+              console.warn('MyPC startup warning:', err);
             }
           }
         },
 
         mapButtonName(raw) {
           if (raw === null || raw === undefined) return '';
-          const str = String(raw.button || raw.action || raw.key || raw.code || raw).toLowerCase().trim();
+          if (typeof raw === 'object') {
+            raw = raw.button ?? raw.action ?? raw.key ?? raw.code ?? raw.name ?? raw.keyCode ?? '';
+          }
+          const str = String(raw).toLowerCase().trim();
           switch (str) {
             case 'up':
             case 'arrowup':
@@ -827,56 +873,66 @@
             case 'select':
             case 'button_a':
             case 'south':
+            case '0':
             case '13':
               return 'a';
+            case 'b':
             case 'back':
             case 'return':
             case 'escape':
             case 'button_b':
             case 'east':
+            case '1':
             case '10009':
             case '27':
               return 'b';
+            case 'x':
             case 'space':
             case ' ':
             case 'button_x':
             case 'west':
+            case '2':
             case '32':
               return 'x';
+            case 'y':
             case 'shift':
             case 'shiftleft':
             case 'shiftright':
             case 'button_y':
             case 'north':
+            case '3':
             case '16':
               return 'y';
             case 'lb':
             case 'l1':
+            case '4':
               return 'lb';
             case 'rb':
             case 'r1':
+            case '5':
               return 'rb';
             case 'lt':
             case 'l2':
+            case '6':
               return 'lt';
             case 'rt':
             case 'r2':
+            case '7':
               return 'rt';
             case 'start':
             case 'pause':
+            case 'options':
+            case 'menu':
             case 'p':
             case 'keyp':
+            case '9':
               return 'start';
             default:
-              if (str === 'b') return 'b';
-              if (str === 'x') return 'x';
-              if (str === 'y') return 'y';
               return '';
           }
         },
 
         onSignal(raw, isDown) {
-          // Distinguish gamepad button 'a' from keyboard key 'a'
           let btn = '';
           if (typeof raw === 'string' && raw === 'a') {
             btn = 'a';
@@ -896,19 +952,33 @@
           if (!mp || !mp.gamepad) return;
 
           let pad = null;
-          if (typeof mp.gamepad.getState === 'function') {
-            pad = mp.gamepad.getState(0) || mp.gamepad.getState();
-          } else if (typeof mp.gamepad.poll === 'function') {
-            pad = mp.gamepad.poll(0) || mp.gamepad.poll();
-          } else if (typeof mp.gamepad.get === 'function') {
-            pad = mp.gamepad.get(0);
-          }
+          try {
+            if (typeof mp.gamepad.getState === 'function') {
+              pad = mp.gamepad.getState(0) || mp.gamepad.getState();
+            } else if (typeof mp.gamepad.poll === 'function') {
+              pad = mp.gamepad.poll(0) || mp.gamepad.poll();
+            } else if (typeof mp.gamepad.get === 'function') {
+              pad = mp.gamepad.get(0) || mp.gamepad.get();
+            } else if (Array.isArray(mp.gamepad.gamepads)) {
+              pad = mp.gamepad.gamepads[0];
+            }
+          } catch (e) {}
 
           if (!pad) return;
 
-          // Analog stick axes
-          const ax = pad.axes ? pad.axes[0] : (pad.leftStickX ?? pad.lx ?? 0);
-          const ay = pad.axes ? pad.axes[1] : (pad.leftStickY ?? pad.ly ?? 0);
+          // Read left analog stick (supports axes array, leftStick object, or lx/ly)
+          let ax = 0;
+          let ay = 0;
+          if (Array.isArray(pad.axes)) {
+            ax = pad.axes[0] || 0;
+            ay = pad.axes[1] || 0;
+          } else if (pad.leftStick) {
+            ax = pad.leftStick.x || 0;
+            ay = pad.leftStick.y || 0;
+          } else {
+            ax = pad.leftStickX ?? pad.lx ?? pad.x ?? 0;
+            ay = pad.leftStickY ?? pad.ly ?? pad.y ?? 0;
+          }
           this.state.lx = Math.abs(ax) > 0.16 ? ax : 0;
           this.state.ly = Math.abs(ay) > 0.16 ? ay : 0;
 
@@ -917,7 +987,7 @@
             for (let i = 0; i < keys.length; i++) {
               const val = b[keys[i]];
               if (val !== undefined) {
-                const down = typeof val === 'object' ? (val.pressed || val.value > 0.4) : Boolean(val);
+                const down = typeof val === 'object' ? Boolean(val.pressed || val.value > 0.4) : Boolean(val);
                 if (down && !this.state[target]) {
                   this.state[target] = true;
                   Game.handleJustPressed(target);
@@ -929,10 +999,10 @@
             }
           };
 
-          syncBtn(['up', 'dpadUp', 12], 'up');
-          syncBtn(['down', 'dpadDown', 13], 'down');
-          syncBtn(['left', 'dpadLeft', 14], 'left');
-          syncBtn(['right', 'dpadRight', 15], 'right');
+          syncBtn(['up', 'dpadUp', 'dpad_up', 12], 'up');
+          syncBtn(['down', 'dpadDown', 'dpad_down', 13], 'down');
+          syncBtn(['left', 'dpadLeft', 'dpad_left', 14], 'left');
+          syncBtn(['right', 'dpadRight', 'dpad_right', 15], 'right');
           syncBtn(['a', 'ok', 'south', 0], 'a');
           syncBtn(['b', 'back', 'east', 1], 'b');
           syncBtn(['x', 'west', 2], 'x');
@@ -941,7 +1011,7 @@
           syncBtn(['rb', 'r1', 5], 'rb');
           syncBtn(['lt', 'l2', 6], 'lt');
           syncBtn(['rt', 'r2', 7], 'rt');
-          syncBtn(['start', 9], 'start');
+          syncBtn(['start', 'options', 9], 'start');
         },
 
         async load(key, fallback = null) {
@@ -973,6 +1043,9 @@
           } catch (e) {}
         }
       };
+
+      // Boot MyPC SDK immediately on script parse so host never waits
+      MyPCBridge.bootImmediate();
 
       // =========================================================================
       // 2. WEB AUDIO SYNTHESIZER (Chiptune Bassline + Engine Hum + Arcade SFX)
@@ -1245,15 +1318,21 @@
         currentBestLap: null,
         toastTimer: 0,
 
-        async start() {
-          await MyPCBridge.init();
-          await this.loadBestLaps();
-          this.initThree();
-          this.initParticles();
+        start() {
+          MyPCBridge.bootImmediate();
           this.buildSelectionCards();
           this.bindDOMClicks();
-          this.buildWorld(TRACKS[0]);
+          this.initThree();
+          this.initParticles();
+          if (this.scene) {
+            this.buildWorld(TRACKS[0]);
+          }
           this.showScreen('title');
+
+          // Load saved lap records asynchronously without blocking startup
+          this.loadBestLaps().then(() => {
+            if (this.state === 'track') this.refreshTrackGrid();
+          });
 
           let prevTime = performance.now();
           const tick = (now) => {
@@ -1262,7 +1341,9 @@
             prevTime = now;
             MyPCBridge.poll();
             this.update(dt);
-            this.renderer.render(this.scene, this.camera);
+            if (this.renderer && this.scene && this.camera) {
+              this.renderer.render(this.scene, this.camera);
+            }
           };
           requestAnimationFrame(tick);
         },
@@ -1278,6 +1359,7 @@
         },
 
         initThree() {
+          if (typeof THREE === 'undefined') return;
           const canvas = document.getElementById('game-canvas');
           // Low-resource TV priority: pixelRatio(1) and antialias: false
           this.renderer = new THREE.WebGLRenderer({
@@ -1300,6 +1382,7 @@
           this.scene.add(this.worldGroup);
 
           window.addEventListener('resize', () => {
+            if (!this.camera || !this.renderer) return;
             this.camera.aspect = window.innerWidth / window.innerHeight;
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -1307,6 +1390,7 @@
         },
 
         initParticles() {
+          if (!this.scene || typeof THREE === 'undefined') return;
           const geo = new THREE.BoxGeometry(0.38, 0.38, 0.38);
           for (let i = 0; i < 45; i++) {
             const mat = new THREE.MeshBasicMaterial({ color: 0x00f5d4 });
@@ -1324,6 +1408,7 @@
         },
 
         spawnParticle(x, y, z, vx, vy, vz, colorHex, life = 0.35) {
+          if (!this.particlePool.length) return;
           const p = this.particlePool[this.particleIndex];
           this.particleIndex = (this.particleIndex + 1) % this.particlePool.length;
           p.mesh.position.set(x, y, z);
@@ -1359,13 +1444,9 @@
           return `
             <svg viewBox="0 0 96 96" width="76" height="76">
               <circle cx="48" cy="48" r="44" fill="${pHex}" opacity="0.28"/>
-              <!-- Racing Shoulders -->
               <path d="M18,86 C22,64 74,64 78,86 Z" fill="${pHex}" stroke="${sHex}" stroke-width="4"/>
-              <!-- Helmet Dome -->
               <circle cx="48" cy="44" r="25" fill="#ffffff" stroke="#140c2c" stroke-width="4"/>
-              <!-- Top Racing Stripe -->
               <path d="M32,25 Q48,14 64,25" fill="none" stroke="${pHex}" stroke-width="7" stroke-linecap="round"/>
-              <!-- Visor -->
               <rect x="28" y="34" width="40" height="16" rx="8" fill="${r.visor}" stroke="#140c2c" stroke-width="3.5"/>
               <path d="M33,38 L52,38" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
             </svg>
@@ -1459,6 +1540,12 @@
 
           document.getElementById('hud-btn-mute').addEventListener('click', () => {
             this.executeAction('toggle-sound');
+          });
+
+          document.getElementById('hud-item-box').addEventListener('click', () => {
+            if (this.state === 'racing' && this.playerKart) {
+              this.activateItem(this.playerKart);
+            }
           });
         },
 
@@ -1621,6 +1708,7 @@
         // 6. RICH LOW-POLY WORLD & TRACK BUILDER (5 DISTINCT THEMES)
         // =========================================================================
         buildWorld(track) {
+          if (!this.worldGroup || typeof THREE === 'undefined') return;
           while (this.worldGroup.children.length > 0) {
             this.worldGroup.remove(this.worldGroup.children[0]);
           }
@@ -1791,7 +1879,6 @@
           const g = new THREE.Group();
           if (theme === 'canyon') {
             if (seed % 3 === 0) {
-              // Multi-arm Saguaro Cactus
               const mat = new THREE.MeshLambertMaterial({ color: 0x2b9348, flatShading: true });
               const trunk = new THREE.Mesh(new THREE.BoxGeometry(1.4, 8.5, 1.4), mat);
               trunk.position.y = 4.25;
@@ -1801,7 +1888,6 @@
               armR.position.set(1.5, 4.0, 0);
               g.add(trunk, armL, armR);
             } else {
-              // Stepped Red-Rock Mesa
               const mat = new THREE.MeshLambertMaterial({ color: 0xb5441c, flatShading: true });
               const base = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 6.5, 9, 6), mat);
               base.position.y = 4.5;
@@ -1810,7 +1896,6 @@
               g.add(base, top);
             }
           } else if (theme === 'neon') {
-            // Cyberpunk Skyscraper with Neon Stripes
             const h = 16 + (seed % 5) * 6;
             const tower = new THREE.Mesh(
               new THREE.BoxGeometry(5.5, h, 5.5),
@@ -1825,7 +1910,6 @@
             band.position.y = h * 0.72;
             g.add(tower, band);
           } else if (theme === 'frost') {
-            // Tiered Snow Pine or Ice Spire
             const trunk = new THREE.Mesh(
               new THREE.CylinderGeometry(0.6, 0.9, 3, 5),
               new THREE.MeshLambertMaterial({ color: 0x5c4033 })
@@ -1838,7 +1922,6 @@
             c2.position.y = 9.2;
             g.add(trunk, c1, c2);
           } else if (theme === 'candy') {
-            // Giant Lollipop Tree
             const stick = new THREE.Mesh(
               new THREE.CylinderGeometry(0.35, 0.35, 7, 6),
               new THREE.MeshLambertMaterial({ color: 0xffffff })
@@ -1853,7 +1936,6 @@
             pop.position.y = 8.4;
             g.add(stick, pop);
           } else {
-            // Starlight Crystal Obelisk
             const crystalColor = seed % 2 === 0 ? 0xffcc00 : 0x9b5de5;
             const crystal = new THREE.Mesh(
               new THREE.OctahedronGeometry(3.6, 0),
@@ -1881,12 +1963,10 @@
           const helmetMat = new THREE.MeshLambertMaterial({ color: 0xffffff, flatShading: true });
           const visorMat = new THREE.MeshBasicMaterial({ color: racer.visor });
 
-          // Lower Floor Pan
           const pan = new THREE.Mesh(new THREE.BoxGeometry(2.35, 0.35, 3.5), darkMat);
           pan.position.y = 0.35;
           bodyGroup.add(pan);
 
-          // Main Sculpted Body & Side Pods
           const tub = new THREE.Mesh(new THREE.BoxGeometry(1.85, 0.58, 2.7), primaryMat);
           tub.position.set(0, 0.65, 0.1);
           bodyGroup.add(tub);
@@ -1897,13 +1977,11 @@
           podR.position.set(-1.05, 0.56, 0);
           bodyGroup.add(podL, podR);
 
-          // Sloped Front Nose
           const nose = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.42, 1.15), secondaryMat);
           nose.position.set(0, 0.58, 1.55);
           nose.rotation.x = 0.18;
           bodyGroup.add(nose);
 
-          // Rear Spoiler Wing & Twin Chrome Exhaust Pipes
           const wingPillar = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.65, 0.25), darkMat);
           wingPillar.position.set(0, 1.05, -1.45);
           const wingBlade = new THREE.Mesh(new THREE.BoxGeometry(2.35, 0.2, 0.68), secondaryMat);
@@ -1918,7 +1996,6 @@
           pipeR.position.set(-0.55, 0.85, -1.65);
           bodyGroup.add(pipeL, pipeR);
 
-          // Driver Torso, Oversized Toy Helmet & Visor
           const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.58, 0.8, 7), primaryMat);
           torso.position.set(0, 1.08, -0.15);
           const helmet = new THREE.Mesh(new THREE.DodecahedronGeometry(0.64, 0), helmetMat);
@@ -1927,7 +2004,6 @@
           visor.position.set(0, 1.66, 0.28);
           bodyGroup.add(torso, helmet, visor);
 
-          // Chunky Wheels
           const wheelGeo = new THREE.CylinderGeometry(0.52, 0.52, 0.48, 8);
           wheelGeo.rotateZ(Math.PI / 2);
           const wheels = [];
@@ -1964,7 +2040,6 @@
             RACERS.forEach((r, idx) => {
               if (idx !== this.selectedRacerIdx) roster.push(r);
             });
-            // Add 5th AI rival so races are against 5 AI karts (6 karts total)
             const bonusAI = Object.assign({}, RACERS[(this.selectedRacerIdx + 1) % RACERS.length], {
               name: 'Robo-Kart'
             });
@@ -2099,15 +2174,15 @@
             }
           }
 
-          // Orbiting camera preview in Menus
           if (['title', 'racer', 'track', 'howto', 'credits'].includes(this.state)) {
-            const angle = performance.now() * 0.00018;
-            this.camera.position.set(Math.cos(angle) * 145, 56, Math.sin(angle) * 145 - 125);
-            this.camera.lookAt(0, 0, -135);
+            if (this.camera) {
+              const angle = performance.now() * 0.00018;
+              this.camera.position.set(Math.cos(angle) * 145, 56, Math.sin(angle) * 145 - 125);
+              this.camera.lookAt(0, 0, -135);
+            }
             return;
           }
 
-          // 3-2-1-GO Countdown
           if (this.state === 'countdown') {
             const prev = Math.ceil(this.countdownTimer);
             this.countdownTimer -= dt;
@@ -2135,7 +2210,6 @@
           this.raceTime += dt;
           AudioEngine.updateMusic(dt, true, this.playerKart ? this.playerKart.speed / 80 : 0.5);
 
-          // Rotate Question Item Boxes
           for (let i = 0; i < this.itemBoxes.length; i++) {
             const b = this.itemBoxes[i];
             if (b.cooldown > 0) {
@@ -2147,7 +2221,6 @@
             }
           }
 
-          // Update Homing Shells
           for (let i = this.projectiles.length - 1; i >= 0; i--) {
             const p = this.projectiles[i];
             p.life -= dt;
@@ -2175,7 +2248,6 @@
             }
           }
 
-          // Update All Karts
           for (let i = 0; i < this.karts.length; i++) {
             const kart = this.karts[i];
             if (kart.isPlayer) {
@@ -2186,7 +2258,6 @@
             this.updateKartTrackState(kart, dt);
           }
 
-          // Kart-to-Kart Bump Physics
           for (let i = 0; i < this.karts.length; i++) {
             for (let j = i + 1; j < this.karts.length; j++) {
               const a = this.karts[i];
@@ -2224,7 +2295,6 @@
           const inp = MyPCBridge.state;
           const r = k.racer;
 
-          // Spin-out penalty state
           if (k.spinTimer > 0) {
             k.spinTimer -= dt;
             k.bodyGroup.rotation.y += dt * 16;
@@ -2236,7 +2306,6 @@
             k.bodyGroup.rotation.y = 0;
           }
 
-          // Hop vertical arc
           if (k.hopY > 0 || k.hopVel !== 0) {
             k.hopY += k.hopVel * dt;
             k.hopVel -= 24 * dt;
@@ -2296,7 +2365,6 @@
             k.speed *= Math.pow(0.97, dt * 60);
           }
 
-          // Multi-stage Drift Charge (Blue -> Orange -> Purple)
           if (driftHeld && k.speed > 32 && Math.abs(steer) > 0.15) {
             if (k.driftDir === 0) k.driftDir = Math.sign(steer);
             k.driftCharge = Math.min(1.5, k.driftCharge + dt * 0.62);
@@ -2330,7 +2398,6 @@
             k.heading += steer * r.turnRate * turnFactor * dt * (k.speed >= 0 ? 1 : -1);
           }
 
-          // Visual steering & body roll
           k.wheels[0].rotation.y = steer * 0.35;
           k.wheels[1].rotation.y = steer * 0.35;
           k.bodyGroup.rotation.z = -steer * 0.08;
@@ -2371,7 +2438,6 @@
 
           k.heading += Math.sign(delta) * Math.min(Math.abs(delta), k.racer.turnRate * 1.2 * dt);
 
-          // Rubber-banding so races stay exciting over 3 laps
           let rubberBand = 1.0;
           if (this.playerKart) {
             const diff = this.playerKart.totalProgress - k.totalProgress;
@@ -2407,7 +2473,6 @@
           }
 
           const distFromCenter = Math.sqrt(bestDistSq);
-          // Off-road drag & hard boundary containment
           if (distFromCenter > this.roadHalfWidth + 1.2 && k.boostTimer <= 0 && k.starTimer <= 0) {
             k.speed *= 0.965;
           }
@@ -2416,7 +2481,6 @@
             k.mesh.position.add(pull);
           }
 
-          // Check Boost Pads
           for (let i = 0; i < this.boostPads.length; i++) {
             if (this.boostPads[i].distanceToSquared(k.mesh.position) < 11) {
               if (k.boostTimer < 0.8) {
@@ -2427,7 +2491,6 @@
             }
           }
 
-          // Check Question Item Boxes
           if (!k.item) {
             for (let i = 0; i < this.itemBoxes.length; i++) {
               const b = this.itemBoxes[i];
@@ -2444,7 +2507,6 @@
             }
           }
 
-          // Check Banana Hazards
           for (let i = this.hazards.length - 1; i >= 0; i--) {
             const h = this.hazards[i];
             if (h.pos.distanceToSquared(k.mesh.position) < 5.5) {
@@ -2458,7 +2520,6 @@
             }
           }
 
-          // Lap Line Detection
           if (k.trackIdx > count * 0.78 && bestIdx < count * 0.22) {
             if (k.isPlayer) {
               const lapTime = this.raceTime - this.lapStartTime;
@@ -2493,7 +2554,7 @@
 
         updateFollowCamera() {
           const p = this.playerKart;
-          if (!p) return;
+          if (!p || !this.camera) return;
           const dist = p.boostTimer > 0 ? 13.6 : 12.2;
           const tx = p.mesh.position.x - Math.sin(p.heading) * dist;
           const tz = p.mesh.position.z - Math.cos(p.heading) * dist;
@@ -2667,9 +2728,11 @@
         }
       };
 
-      window.addEventListener('DOMContentLoaded', () => {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => Game.start());
+      } else {
         Game.start();
-      });
+      }
     })();
   </script>
 </body>
