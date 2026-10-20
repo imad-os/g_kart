@@ -2,7 +2,7 @@
   "mypc": 1,
   "id": "Kart-Racer",
   "name": "Kart Racer",
-  "description": "Kart Racer",
+  "description": "Five worlds. Five racers. One trophy. 3D arcade kart racer for My PC",
   "type": "game",
   "entry": "index.html",
   "icon": "icon.svg",
