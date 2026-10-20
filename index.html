@@ -310,6 +310,199 @@
       font-weight: 800;
     }
 
+    /* SETTINGS & BUTTON MAPPING UI */
+    .settings-modal {
+      max-width: 940px;
+      width: 94vw;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      padding: 2.4vh 3vw;
+    }
+
+    .settings-tabs {
+      display: flex;
+      gap: 1vw;
+      justify-content: center;
+      margin: 1.2vh 0 1.8vh;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      font-family: var(--font-display);
+      font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+      padding: 0.9vh 1.8vw;
+      border-radius: 12px;
+      border: 2px solid var(--panel-border);
+      background: rgba(255, 255, 255, 0.08);
+      color: #dfd9f2;
+      cursor: pointer;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .tab-btn.active-tab,
+    .tab-btn.focused {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, #ff2e63, #ff8c00);
+      color: #fff;
+      box-shadow: 0 4px 0 #700a26;
+    }
+
+    .settings-body {
+      overflow-y: auto;
+      max-height: 54vh;
+      padding-right: 0.6vw;
+      margin-bottom: 1.8vh;
+      text-align: left;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.2vh 2vw;
+    }
+
+    @media (max-width: 760px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .setting-item {
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 1.2vh 1.4vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1vw;
+    }
+
+    .setting-label {
+      font-weight: 800;
+      font-size: clamp(0.85rem, 1.15vw, 1.02rem);
+      color: #fff;
+    }
+
+    .setting-sub {
+      font-size: 0.76rem;
+      color: #bdb5d9;
+      display: block;
+      font-weight: 600;
+    }
+
+    .setting-ctrl {
+      font-family: var(--font-display);
+      font-size: clamp(0.9rem, 1.25vw, 1.1rem);
+      padding: 0.6vh 1.1vw;
+      border-radius: 10px;
+      border: 2px solid var(--cyan);
+      background: rgba(0, 245, 212, 0.14);
+      color: var(--cyan);
+      cursor: pointer;
+      min-width: 110px;
+      text-align: center;
+    }
+
+    .setting-ctrl.focused,
+    .setting-ctrl:hover {
+      background: var(--cyan);
+      color: #0b0518;
+      border-color: #fff;
+    }
+
+    .mapping-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 1vh 1.3vw;
+      margin-bottom: 0.9vh;
+      gap: 1vw;
+      flex-wrap: wrap;
+    }
+
+    .mapping-action-title {
+      font-family: var(--font-display);
+      font-size: clamp(0.95rem, 1.3vw, 1.18rem);
+      color: var(--accent);
+      letter-spacing: 0.8px;
+      min-width: 165px;
+    }
+
+    .mapping-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5vw;
+      flex: 1;
+      align-items: center;
+    }
+
+    .key-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1.5px solid rgba(0, 245, 212, 0.6);
+      color: #fff;
+      padding: 0.35vh 0.75vw;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: clamp(0.75rem, 0.95vw, 0.88rem);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .key-chip:hover {
+      border-color: var(--accent-hot);
+      background: rgba(255, 46, 99, 0.28);
+    }
+
+    .key-chip .rm-x {
+      color: var(--accent-hot);
+      font-weight: 900;
+    }
+
+    .map-btn-group {
+      display: flex;
+      gap: 0.5vw;
+    }
+
+    .bind-btn {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      padding: 0.55vh 0.95vw;
+      border-radius: 9px;
+      border: 2px solid var(--accent);
+      background: rgba(255, 204, 0, 0.16);
+      color: var(--accent);
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .bind-btn:hover,
+    .bind-btn.focused {
+      background: var(--accent);
+      color: #0b0518;
+    }
+
+    .bind-btn.listening {
+      background: var(--accent-hot);
+      border-color: #fff;
+      color: #fff;
+      animation: pulseBind 0.6s infinite alternate;
+    }
+
+    @keyframes pulseBind {
+      from { transform: scale(1); }
+      to { transform: scale(1.06); }
+    }
+
     /* RACE HUD */
     #hud {
       position: fixed;
@@ -536,9 +729,9 @@
     <div class="menu-stack">
       <button class="btn" data-action="start-gp">Play Grand Prix</button>
       <button class="btn" data-action="start-tt">Time Trial</button>
+      <button class="btn" data-action="open-settings">Settings &amp; Controls</button>
       <button class="btn" data-action="open-howto">How to Play</button>
       <button class="btn" data-action="open-credits">Credits</button>
-      <button class="btn btn-secondary" data-action="toggle-autogas" id="btn-autogas">TV Remote Auto-Gas: ON</button>
     </div>
   </section>
 
@@ -635,15 +828,124 @@
     </div>
   </section>
 
+  <!-- 5B. SETTINGS & UNLIMITED BUTTON MAPPING -->
+  <section id="screen-settings" class="screen">
+    <div class="modal-box settings-modal">
+      <h2 class="display-title" style="font-size: clamp(1.8rem, 3.6vw, 3rem);">Settings &amp; Button Mapping</h2>
+      <div class="settings-tabs">
+        <button class="tab-btn active-tab" data-action="tab-controls" id="tab-btn-controls">Button Mapping (Unlimited)</button>
+        <button class="tab-btn" data-action="tab-gameplay" id="tab-btn-gameplay">Gameplay, Audio &amp; Graphics</button>
+      </div>
+
+      <!-- TAB 1: UNLIMITED BUTTON MAPPING -->
+      <div id="settings-panel-controls" class="settings-body">
+        <p style="font-size: 0.86rem; color: #cbc3e8; margin-bottom: 1.2vh;">
+          Click <strong>+ Bind Key / Button</strong> on any action, then press <strong>ANY Keyboard key, Gamepad button, Trigger, Stick direction, or TV Remote button</strong>. You can bind unlimited keys to every action! Click a bound chip to remove it.
+        </p>
+        <div id="mapping-list"></div>
+      </div>
+
+      <!-- TAB 2: GAMEPLAY, AUDIO & GRAPHICS -->
+      <div id="settings-panel-gameplay" class="settings-body" style="display: none;">
+        <div class="settings-grid">
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">Auto-Accelerate (TV Remote)</span>
+              <span class="setting-sub">Kart accelerates automatically without holding gas</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-toggle-autogas" id="set-autogas">ON</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">Steering Sensitivity</span>
+              <span class="setting-sub">Adjust cornering responsiveness</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-cycle-sens" id="set-sens">100%</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">AI Difficulty</span>
+              <span class="setting-sub">Rival kart speed &amp; item frequency</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-cycle-diff" id="set-diff">NORMAL (100cc)</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">Master Sound &amp; Music</span>
+              <span class="setting-sub">Toggle procedural synth &amp; SFX</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-toggle-sound" id="set-sound">ON</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">Music Volume</span>
+              <span class="setting-sub">Chiptune race bassline level</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-cycle-musicvol" id="set-musicvol">80%</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">SFX Volume</span>
+              <span class="setting-sub">Drift sparks, boosts &amp; item sounds</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-cycle-sfxvol" id="set-sfxvol">100%</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">Camera Field of View (FOV)</span>
+              <span class="setting-sub">Wide arcade sense of speed</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-cycle-fov" id="set-fov">NORMAL (62°)</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">Graphics Quality</span>
+              <span class="setting-sub">Low-Resource TV Mode vs High DPI</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-cycle-gfx" id="set-gfx">TV PERFORMANCE</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">Show Minimap</span>
+              <span class="setting-sub">Display live track radar in HUD</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-toggle-minimap" id="set-minimap">ON</button>
+          </div>
+
+          <div class="setting-item">
+            <div>
+              <span class="setting-label">Analog Stick Deadzone</span>
+              <span class="setting-sub">Prevent controller stick drift</span>
+            </div>
+            <button class="setting-ctrl" data-action="set-cycle-deadzone" id="set-deadzone">15%</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-bar" style="margin-top: 0.6vh;">
+        <button class="btn btn-secondary" data-action="reset-controls">Reset Default Controls</button>
+        <button class="btn btn-secondary" data-action="close-settings">Save &amp; Back</button>
+      </div>
+    </div>
+  </section>
+
   <!-- 6. PAUSE OVERLAY -->
   <section id="screen-pause" class="screen">
     <div class="modal-box">
       <h2 class="display-title" style="font-size: clamp(2.2rem, 4.5vw, 3.6rem);">Race Paused</h2>
       <div class="menu-stack" style="margin: 2.2vh auto 0;">
         <button class="btn" data-action="resume-race">Resume Race</button>
+        <button class="btn" data-action="open-settings-pause">Settings &amp; Controls</button>
         <button class="btn" data-action="restart-race">Restart Track</button>
         <button class="btn btn-secondary" data-action="toggle-sound" id="btn-sound">Sound &amp; Music: ON</button>
-        <button class="btn btn-secondary" data-action="toggle-autogas-pause" id="btn-autogas-pause">Auto-Gas: ON</button>
         <button class="btn btn-secondary" data-action="quit-title">Quit to Title</button>
       </div>
     </div>
@@ -712,11 +1014,68 @@
       'use strict';
 
       // =========================================================================
-      // 1. IMMEDIATE SYNCHRONOUS MYPC SDK HANDSHAKE & UNIVERSAL INPUT BRIDGE
-      // Signals readiness immediately so the My PC host container never times out.
+      // 1. DEFAULT SETTINGS & UNLIMITED BUTTON MAPPING DEFINITIONS
+      // Every action supports an unlimited array of bound tokens (Keyboard e.code,
+      // e.key, Gamepad buttons, Analog axes, and TV Remote keys).
+      // =========================================================================
+      const ACTION_META = [
+        { id: 'steerLeft', label: 'Steer Left' },
+        { id: 'steerRight', label: 'Steer Right' },
+        { id: 'accelerate', label: 'Accelerate / Gas' },
+        { id: 'brake', label: 'Brake / Reverse' },
+        { id: 'drift', label: 'Hop & Drift Boost' },
+        { id: 'item', label: 'Use Item Power-Up' },
+        { id: 'pause', label: 'Pause / Back' },
+        { id: 'menuUp', label: 'Menu Up' },
+        { id: 'menuDown', label: 'Menu Down' },
+        { id: 'menuLeft', label: 'Menu Left' },
+        { id: 'menuRight', label: 'Menu Right' },
+        { id: 'menuConfirm', label: 'Menu Confirm / OK' }
+      ];
+
+      function getDefaultBindings() {
+        return {
+          steerLeft: ['KeyA', 'ArrowLeft', 'PAD_LEFT', 'AXIS_LX_NEG'],
+          steerRight: ['KeyD', 'ArrowRight', 'PAD_RIGHT', 'AXIS_LX_POS'],
+          accelerate: ['KeyW', 'ArrowUp', 'PAD_RT', 'PAD_A', 'AXIS_LY_NEG'],
+          brake: ['KeyS', 'ArrowDown', 'PAD_LT', 'PAD_B', 'AXIS_LY_POS'],
+          drift: ['Space', 'KeyJ', 'PAD_RB', 'PAD_X'],
+          item: ['ShiftLeft', 'ShiftRight', 'Enter', 'KeyK', 'PAD_LB', 'PAD_Y'],
+          pause: ['Escape', 'KeyP', 'Backspace', 'BrowserBack', 'PAD_START', 'TV_BACK'],
+          menuUp: ['ArrowUp', 'KeyW', 'PAD_UP', 'AXIS_LY_NEG'],
+          menuDown: ['ArrowDown', 'KeyS', 'PAD_DOWN', 'AXIS_LY_POS'],
+          menuLeft: ['ArrowLeft', 'KeyA', 'PAD_LEFT', 'AXIS_LX_NEG'],
+          menuRight: ['ArrowRight', 'KeyD', 'PAD_RIGHT', 'AXIS_LX_POS'],
+          menuConfirm: ['Enter', 'Space', 'PAD_A']
+        };
+      }
+
+      const UserSettings = {
+        autoGas: false,
+        steerSensitivity: 1.0,
+        aiDifficulty: 'normal', // 'easy', 'normal', 'hard'
+        soundEnabled: true,
+        musicVolume: 0.8,
+        sfxVolume: 1.0,
+        cameraFov: 62,
+        graphicsMode: 'tv', // 'tv' (pixelRatio 1) or 'high' (devicePixelRatio)
+        showMinimap: true,
+        stickDeadzone: 0.15,
+        bindings: getDefaultBindings()
+      };
+
+      // =========================================================================
+      // 2. IMMEDIATE SYNCHRONOUS MYPC SDK HANDSHAKE & UNIVERSAL INPUT ENGINE
+      // Detects all Keyboard keys, Native Gamepads, MyPC.gamepad, and TV Remote.
       // =========================================================================
       const MyPCBridge = {
         initialized: false,
+        activeTokens: new Set(),
+        analogTokens: new Map(),
+        listeningAction: null,
+        prevPadButtons: {},
+
+        // Legacy compatibility state used by Game
         state: {
           up: false,
           down: false,
@@ -739,6 +1098,9 @@
           if (this.initialized) return;
           this.initialized = true;
 
+          // Bind universal keyboard & remote listeners so ALL keys are detected without limits
+          this.bindUniversalDOMListeners();
+
           const mp = window.MyPC;
           const appConfig = {
             id: 'g_kart',
@@ -747,13 +1109,12 @@
             title: 'Kart Racer',
             type: 'game',
             category: 'game',
-            version: '1.0.0',
+            version: '1.1.0',
             icon: 'icon.svg'
           };
 
           if (mp) {
             try {
-              // 1. Call MyPC.init(...) if provided
               if (typeof mp.init === 'function') {
                 const initResult = mp.init(appConfig);
                 if (initResult && typeof initResult.then === 'function') {
@@ -763,65 +1124,61 @@
                 }
               }
 
-              // 2. Call MyPC.ready() immediately so the host reveals the window
               if (typeof mp.ready === 'function') {
                 mp.ready(appConfig);
               }
 
-              // 3. Bind MyPC.gamepad listeners (supporting all SDK event patterns)
               if (mp.gamepad) {
                 if (typeof mp.gamepad.onButtonDown === 'function') {
-                  mp.gamepad.onButtonDown((btn) => this.onSignal(btn, true));
+                  mp.gamepad.onButtonDown((btn) => this.onSDKSignal(btn, true));
                 }
                 if (typeof mp.gamepad.onButtonUp === 'function') {
-                  mp.gamepad.onButtonUp((btn) => this.onSignal(btn, false));
+                  mp.gamepad.onButtonUp((btn) => this.onSDKSignal(btn, false));
                 }
                 if (typeof mp.gamepad.on === 'function') {
-                  mp.gamepad.on('buttonDown', (e) => this.onSignal(e, true));
-                  mp.gamepad.on('buttonUp', (e) => this.onSignal(e, false));
-                  mp.gamepad.on('down', (e) => this.onSignal(e, true));
-                  mp.gamepad.on('up', (e) => this.onSignal(e, false));
+                  mp.gamepad.on('buttonDown', (e) => this.onSDKSignal(e, true));
+                  mp.gamepad.on('buttonUp', (e) => this.onSDKSignal(e, false));
+                  mp.gamepad.on('down', (e) => this.onSDKSignal(e, true));
+                  mp.gamepad.on('up', (e) => this.onSDKSignal(e, false));
                   mp.gamepad.on('press', (e) => {
-                    this.onSignal(e, true);
-                    setTimeout(() => this.onSignal(e, false), 90);
+                    this.onSDKSignal(e, true);
+                    setTimeout(() => this.onSDKSignal(e, false), 90);
                   });
                 }
                 if (typeof mp.gamepad.onAxis === 'function') {
                   mp.gamepad.onAxis((axis) => {
-                    if (axis && typeof axis.x === 'number') this.state.lx = Math.abs(axis.x) > 0.15 ? axis.x : 0;
-                    if (axis && typeof axis.y === 'number') this.state.ly = Math.abs(axis.y) > 0.15 ? axis.y : 0;
+                    const dz = UserSettings.stickDeadzone;
+                    if (axis && typeof axis.x === 'number') this.state.lx = Math.abs(axis.x) > dz ? axis.x : 0;
+                    if (axis && typeof axis.y === 'number') this.state.ly = Math.abs(axis.y) > dz ? axis.y : 0;
                   });
                 }
               }
 
-              // 4. Bind MyPC.input listeners (supporting callback or event emitter)
               if (mp.input) {
                 if (typeof mp.input.onKeyDown === 'function') {
-                  mp.input.onKeyDown((k) => this.onSignal(k, true));
+                  mp.input.onKeyDown((k) => this.onSDKSignal(k, true));
                 }
                 if (typeof mp.input.onKeyUp === 'function') {
-                  mp.input.onKeyUp((k) => this.onSignal(k, false));
+                  mp.input.onKeyUp((k) => this.onSDKSignal(k, false));
                 }
                 if (typeof mp.input.onAction === 'function') {
-                  mp.input.onAction((act, down) => this.onSignal(act, down !== false));
+                  mp.input.onAction((act, down) => this.onSDKSignal(act, down !== false));
                 }
                 if (typeof mp.input.on === 'function') {
                   try {
-                    // Some SDK versions take (callback), others take ('event', callback)
                     mp.input.on((ev) => {
                       if (!ev) return;
                       const isUp = ev.type === 'keyup' || ev.type === 'up' || ev.pressed === false || ev.down === false;
-                      this.onSignal(ev, !isUp);
+                      this.onSDKSignal(ev, !isUp);
                     });
-                    mp.input.on('keydown', (e) => this.onSignal(e, true));
-                    mp.input.on('keyup', (e) => this.onSignal(e, false));
-                    mp.input.on('action', (e) => this.onSignal(e, true));
+                    mp.input.on('keydown', (e) => this.onSDKSignal(e, true));
+                    mp.input.on('keyup', (e) => this.onSDKSignal(e, false));
                   } catch (e) {}
                 }
               }
 
               if (typeof mp.onKey === 'function') {
-                mp.onKey((k, down) => this.onSignal(k, down !== false));
+                mp.onKey((k, down) => this.onSDKSignal(k, down !== false));
               }
             } catch (err) {
               console.warn('MyPC startup warning:', err);
@@ -829,189 +1186,303 @@
           }
         },
 
-        mapButtonName(raw) {
+        bindUniversalDOMListeners() {
+          window.addEventListener('keydown', (e) => {
+            // Capture ANY keyboard key or TV remote keyCode
+            let token = e.code || e.key || ('KEY_' + e.keyCode);
+            if (e.keyCode === 10009 || e.key === 'XF86Back') token = 'TV_BACK';
+
+            // Prevent default scrolling on arrows / space when playing
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', ' '].includes(e.code || e.key)) {
+              e.preventDefault();
+            }
+
+            this.setTokenState(token, true, 1.0);
+            if (e.key && e.key.length === 1) {
+              const upperKey = 'Key' + e.key.toUpperCase();
+              if (upperKey !== token) this.setTokenState(upperKey, true, 1.0);
+            }
+          }, { passive: false });
+
+          window.addEventListener('keyup', (e) => {
+            let token = e.code || e.key || ('KEY_' + e.keyCode);
+            if (e.keyCode === 10009 || e.key === 'XF86Back') token = 'TV_BACK';
+            this.setTokenState(token, false, 0);
+            if (e.key && e.key.length === 1) {
+              const upperKey = 'Key' + e.key.toUpperCase();
+              if (upperKey !== token) this.setTokenState(upperKey, false, 0);
+            }
+          });
+
+          window.addEventListener('blur', () => {
+            this.activeTokens.clear();
+            this.analogTokens.clear();
+          });
+        },
+
+        normalizeSDKToken(raw) {
           if (raw === null || raw === undefined) return '';
           if (typeof raw === 'object') {
-            raw = raw.button ?? raw.action ?? raw.key ?? raw.code ?? raw.name ?? raw.keyCode ?? '';
+            if (raw.code) return String(raw.code);
+            raw = raw.button ?? raw.action ?? raw.key ?? raw.name ?? raw.keyCode ?? '';
           }
-          const str = String(raw).toLowerCase().trim();
-          switch (str) {
+          const str = String(raw).trim();
+          const lower = str.toLowerCase();
+          switch (lower) {
             case 'up':
-            case 'arrowup':
             case 'dpadup':
             case 'dpad_up':
-            case 'w':
-            case 'keyw':
-            case '38':
-              return 'up';
+            case '12':
+              return 'PAD_UP';
             case 'down':
-            case 'arrowdown':
             case 'dpaddown':
             case 'dpad_down':
-            case 's':
-            case 'keys':
-            case '40':
-              return 'down';
+            case '13':
+              return 'PAD_DOWN';
             case 'left':
-            case 'arrowleft':
             case 'dpadleft':
             case 'dpad_left':
-            case 'a':
-            case 'keya':
-            case '37':
-              return 'left';
+            case '14':
+              return 'PAD_LEFT';
             case 'right':
-            case 'arrowright':
             case 'dpadright':
             case 'dpad_right':
-            case 'd':
-            case 'keyd':
-            case '39':
-              return 'right';
+            case '15':
+              return 'PAD_RIGHT';
+            case 'a':
             case 'ok':
-            case 'enter':
             case 'select':
             case 'button_a':
             case 'south':
             case '0':
-            case '13':
-              return 'a';
+              return 'PAD_A';
             case 'b':
-            case 'back':
-            case 'return':
-            case 'escape':
             case 'button_b':
             case 'east':
             case '1':
+              return 'PAD_B';
+            case 'back':
+            case 'return':
             case '10009':
-            case '27':
-              return 'b';
+              return 'TV_BACK';
             case 'x':
-            case 'space':
-            case ' ':
             case 'button_x':
             case 'west':
             case '2':
-            case '32':
-              return 'x';
+              return 'PAD_X';
             case 'y':
-            case 'shift':
-            case 'shiftleft':
-            case 'shiftright':
             case 'button_y':
             case 'north':
             case '3':
-            case '16':
-              return 'y';
+              return 'PAD_Y';
             case 'lb':
             case 'l1':
             case '4':
-              return 'lb';
+              return 'PAD_LB';
             case 'rb':
             case 'r1':
             case '5':
-              return 'rb';
+              return 'PAD_RB';
             case 'lt':
             case 'l2':
             case '6':
-              return 'lt';
+              return 'PAD_LT';
             case 'rt':
             case 'r2':
             case '7':
-              return 'rt';
+              return 'PAD_RT';
             case 'start':
             case 'pause':
             case 'options':
             case 'menu':
-            case 'p':
-            case 'keyp':
             case '9':
-              return 'start';
+              return 'PAD_START';
             default:
-              return '';
+              return str;
           }
         },
 
-        onSignal(raw, isDown) {
-          let btn = '';
-          if (typeof raw === 'string' && raw === 'a') {
-            btn = 'a';
+        onSDKSignal(raw, isDown) {
+          const token = this.normalizeSDKToken(raw);
+          if (!token) return;
+          this.setTokenState(token, isDown, isDown ? 1 : 0);
+        },
+
+        setTokenState(token, isDown, magnitude = 1.0) {
+          if (!token) return;
+
+          // If user is currently binding a button in the Settings menu, capture it immediately
+          if (isDown && this.listeningAction) {
+            const act = this.listeningAction;
+            this.listeningAction = null;
+            Game.completeKeyBind(act, token);
+            return;
+          }
+
+          const wasDown = this.activeTokens.has(token);
+          if (isDown) {
+            this.activeTokens.add(token);
+            this.analogTokens.set(token, magnitude);
+            if (!wasDown) {
+              this.onTokenJustPressed(token);
+            }
           } else {
-            btn = this.mapButtonName(raw);
+            this.activeTokens.delete(token);
+            this.analogTokens.delete(token);
           }
-          if (!btn) return;
-          const prev = !!this.state[btn];
-          this.state[btn] = isDown;
-          if (isDown && !prev) {
-            Game.handleJustPressed(btn);
+        },
+
+        onTokenJustPressed(token) {
+          const b = UserSettings.bindings;
+          const matches = (actId) => Array.isArray(b[actId]) && b[actId].includes(token);
+
+          if (Game.state === 'racing') {
+            if (matches('pause')) {
+              Game.handleJustPressed('start');
+              return;
+            }
+            if (matches('item')) {
+              Game.handleJustPressed('lb');
+              return;
+            }
+            if (matches('drift')) {
+              Game.handleJustPressed('rb');
+              return;
+            }
+          } else {
+            if (matches('menuUp') || matches('steerLeft') && token === 'ArrowUp') {
+              Game.handleJustPressed('up');
+            } else if (matches('menuDown')) {
+              Game.handleJustPressed('down');
+            } else if (matches('menuLeft')) {
+              Game.handleJustPressed('left');
+            } else if (matches('menuRight')) {
+              Game.handleJustPressed('right');
+            } else if (matches('menuConfirm')) {
+              Game.handleJustPressed('a');
+            } else if (matches('pause') || matches('brake')) {
+              Game.handleJustPressed('b');
+            }
           }
+        },
+
+        isActionHeld(actionId) {
+          const list = UserSettings.bindings[actionId];
+          if (!Array.isArray(list)) return false;
+          for (let i = 0; i < list.length; i++) {
+            if (this.activeTokens.has(list[i])) return true;
+          }
+          return false;
+        },
+
+        getActionValue(actionId) {
+          const list = UserSettings.bindings[actionId];
+          if (!Array.isArray(list)) return 0;
+          let maxVal = 0;
+          for (let i = 0; i < list.length; i++) {
+            const tok = list[i];
+            if (this.activeTokens.has(tok)) {
+              const v = this.analogTokens.get(tok) ?? 1.0;
+              if (v > maxVal) maxVal = v;
+            }
+          }
+          return maxVal;
         },
 
         poll() {
+          const dz = UserSettings.stickDeadzone;
+          let lx = 0;
+          let ly = 0;
+
+          // 1. Poll MyPC.gamepad if available
           const mp = window.MyPC;
-          if (!mp || !mp.gamepad) return;
-
-          let pad = null;
-          try {
-            if (typeof mp.gamepad.getState === 'function') {
-              pad = mp.gamepad.getState(0) || mp.gamepad.getState();
-            } else if (typeof mp.gamepad.poll === 'function') {
-              pad = mp.gamepad.poll(0) || mp.gamepad.poll();
-            } else if (typeof mp.gamepad.get === 'function') {
-              pad = mp.gamepad.get(0) || mp.gamepad.get();
-            } else if (Array.isArray(mp.gamepad.gamepads)) {
-              pad = mp.gamepad.gamepads[0];
-            }
-          } catch (e) {}
-
-          if (!pad) return;
-
-          // Read left analog stick (supports axes array, leftStick object, or lx/ly)
-          let ax = 0;
-          let ay = 0;
-          if (Array.isArray(pad.axes)) {
-            ax = pad.axes[0] || 0;
-            ay = pad.axes[1] || 0;
-          } else if (pad.leftStick) {
-            ax = pad.leftStick.x || 0;
-            ay = pad.leftStick.y || 0;
-          } else {
-            ax = pad.leftStickX ?? pad.lx ?? pad.x ?? 0;
-            ay = pad.leftStickY ?? pad.ly ?? pad.y ?? 0;
-          }
-          this.state.lx = Math.abs(ax) > 0.16 ? ax : 0;
-          this.state.ly = Math.abs(ay) > 0.16 ? ay : 0;
-
-          const b = pad.buttons || pad;
-          const syncBtn = (keys, target) => {
-            for (let i = 0; i < keys.length; i++) {
-              const val = b[keys[i]];
-              if (val !== undefined) {
-                const down = typeof val === 'object' ? Boolean(val.pressed || val.value > 0.4) : Boolean(val);
-                if (down && !this.state[target]) {
-                  this.state[target] = true;
-                  Game.handleJustPressed(target);
-                } else if (!down && this.state[target]) {
-                  this.state[target] = false;
-                }
-                return;
+          let sdkPad = null;
+          if (mp && mp.gamepad) {
+            try {
+              if (typeof mp.gamepad.getState === 'function') {
+                sdkPad = mp.gamepad.getState(0) || mp.gamepad.getState();
+              } else if (typeof mp.gamepad.poll === 'function') {
+                sdkPad = mp.gamepad.poll(0) || mp.gamepad.poll();
+              } else if (typeof mp.gamepad.get === 'function') {
+                sdkPad = mp.gamepad.get(0) || mp.gamepad.get();
+              } else if (Array.isArray(mp.gamepad.gamepads)) {
+                sdkPad = mp.gamepad.gamepads[0];
               }
-            }
-          };
+            } catch (e) {}
+          }
 
-          syncBtn(['up', 'dpadUp', 'dpad_up', 12], 'up');
-          syncBtn(['down', 'dpadDown', 'dpad_down', 13], 'down');
-          syncBtn(['left', 'dpadLeft', 'dpad_left', 14], 'left');
-          syncBtn(['right', 'dpadRight', 'dpad_right', 15], 'right');
-          syncBtn(['a', 'ok', 'south', 0], 'a');
-          syncBtn(['b', 'back', 'east', 1], 'b');
-          syncBtn(['x', 'west', 2], 'x');
-          syncBtn(['y', 'north', 3], 'y');
-          syncBtn(['lb', 'l1', 4], 'lb');
-          syncBtn(['rb', 'r1', 5], 'rb');
-          syncBtn(['lt', 'l2', 6], 'lt');
-          syncBtn(['rt', 'r2', 7], 'rt');
-          syncBtn(['start', 'options', 9], 'start');
+          if (sdkPad) {
+            if (Array.isArray(sdkPad.axes)) {
+              lx = sdkPad.axes[0] || 0;
+              ly = sdkPad.axes[1] || 0;
+            } else if (sdkPad.leftStick) {
+              lx = sdkPad.leftStick.x || 0;
+              ly = sdkPad.leftStick.y || 0;
+            } else {
+              lx = sdkPad.leftStickX ?? sdkPad.lx ?? sdkPad.x ?? 0;
+              ly = sdkPad.leftStickY ?? sdkPad.ly ?? 0;
+            }
+          }
+
+          // 2. Also poll standard W3C navigator.getGamepads() so all physical controllers & extra buttons (BTN_0..BTN_31) work seamlessly
+          if (typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function') {
+            try {
+              const pads = navigator.getGamepads();
+              for (let p = 0; p < pads.length; p++) {
+                const pad = pads[p];
+                if (!pad || !pad.connected) continue;
+
+                if (pad.axes && pad.axes.length >= 2) {
+                  if (Math.abs(pad.axes[0]) > Math.abs(lx)) lx = pad.axes[0];
+                  if (Math.abs(pad.axes[1]) > Math.abs(ly)) ly = pad.axes[1];
+                }
+
+                const stdMap = {
+                  0: 'PAD_A',
+                  1: 'PAD_B',
+                  2: 'PAD_X',
+                  3: 'PAD_Y',
+                  4: 'PAD_LB',
+                  5: 'PAD_RB',
+                  6: 'PAD_LT',
+                  7: 'PAD_RT',
+                  8: 'PAD_SELECT',
+                  9: 'PAD_START',
+                  10: 'PAD_L3',
+                  11: 'PAD_R3',
+                  12: 'PAD_UP',
+                  13: 'PAD_DOWN',
+                  14: 'PAD_LEFT',
+                  15: 'PAD_RIGHT'
+                };
+
+                for (let bIdx = 0; bIdx < pad.buttons.length; bIdx++) {
+                  const btnObj = pad.buttons[bIdx];
+                  const pressed = typeof btnObj === 'object' ? (btnObj.pressed || btnObj.value > 0.35) : Boolean(btnObj);
+                  const val = typeof btnObj === 'object' ? (btnObj.value || (pressed ? 1 : 0)) : (pressed ? 1 : 0);
+                  const tok = stdMap[bIdx] || ('PAD_BTN_' + bIdx);
+                  const keyId = p + '_' + tok;
+
+                  if (pressed) {
+                    this.prevPadButtons[keyId] = true;
+                    this.setTokenState(tok, true, val);
+                  } else if (this.prevPadButtons[keyId]) {
+                    this.prevPadButtons[keyId] = false;
+                    this.setTokenState(tok, false, 0);
+                  }
+                }
+              }
+            } catch (e) {}
+          }
+
+          // Update virtual axis tokens for custom axis bindings
+          this.state.lx = Math.abs(lx) > dz ? lx : 0;
+          this.state.ly = Math.abs(ly) > dz ? ly : 0;
+
+          this.setTokenState('AXIS_LX_NEG', lx < -dz, Math.min(1, Math.abs(lx)));
+          this.setTokenState('AXIS_LX_POS', lx > dz, Math.min(1, Math.abs(lx)));
+          this.setTokenState('AXIS_LY_NEG', ly < -dz, Math.min(1, Math.abs(ly)));
+          this.setTokenState('AXIS_LY_POS', ly > dz, Math.min(1, Math.abs(ly)));
         },
 
         async load(key, fallback = null) {
@@ -1019,8 +1490,12 @@
           try {
             if (mp && mp.storage && typeof mp.storage.get === 'function') {
               const v = await mp.storage.get(key);
-              return v !== undefined && v !== null ? v : fallback;
+              if (v !== undefined && v !== null) return v;
             }
+          } catch (e) {}
+          try {
+            const raw = localStorage.getItem('mypc_' + key);
+            if (raw !== null) return JSON.parse(raw);
           } catch (e) {}
           return fallback;
         },
@@ -1031,6 +1506,9 @@
             if (mp && mp.storage && typeof mp.storage.set === 'function') {
               await mp.storage.set(key, val);
             }
+          } catch (e) {}
+          try {
+            localStorage.setItem('mypc_' + key, JSON.stringify(val));
           } catch (e) {}
         },
 
@@ -1048,17 +1526,16 @@
       MyPCBridge.bootImmediate();
 
       // =========================================================================
-      // 2. WEB AUDIO SYNTHESIZER (Chiptune Bassline + Engine Hum + Arcade SFX)
+      // 3. WEB AUDIO SYNTHESIZER (Respects Master, Music & SFX Volume Settings)
       // =========================================================================
       const AudioEngine = {
         ctx: null,
-        enabled: true,
         musicTimer: 0,
         noteIdx: 0,
         melody: [261.63, 329.63, 392.00, 523.25, 392.00, 329.63, 293.66, 349.23, 440.00, 587.33, 440.00, 349.23],
 
         ensure() {
-          if (!this.enabled) return false;
+          if (!UserSettings.soundEnabled) return false;
           if (!this.ctx) {
             const AC = window.AudioContext || window.webkitAudioContext;
             if (AC) this.ctx = new AC();
@@ -1069,8 +1546,11 @@
           return !!this.ctx;
         },
 
-        tone(freq, duration, type = 'square', gainVal = 0.07, slide = 0) {
+        tone(freq, duration, type = 'square', gainVal = 0.07, slide = 0, isMusic = false) {
           if (!this.ensure()) return;
+          const volMult = isMusic ? UserSettings.musicVolume : UserSettings.sfxVolume;
+          if (volMult <= 0.01) return;
+
           const now = this.ctx.currentTime;
           const osc = this.ctx.createOscillator();
           const gain = this.ctx.createGain();
@@ -1079,8 +1559,8 @@
           if (slide !== 0) {
             osc.frequency.linearRampToValueAtTime(Math.max(40, freq + slide), now + duration);
           }
-          gain.gain.setValueAtTime(gainVal, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+          gain.gain.setValueAtTime(gainVal * volMult, now);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + duration);
           osc.connect(gain);
           gain.connect(this.ctx.destination);
           osc.start(now);
@@ -1104,22 +1584,22 @@
         },
 
         updateMusic(dt, isRacing, playerSpeedRatio) {
-          if (!this.enabled || !this.ctx || !isRacing) return;
+          if (!UserSettings.soundEnabled || !this.ctx || !isRacing) return;
           this.musicTimer -= dt;
           if (this.musicTimer <= 0) {
             this.musicTimer = 0.22;
             const note = this.melody[this.noteIdx % this.melody.length];
             this.noteIdx++;
-            this.tone(note * 0.5, 0.14, 'triangle', 0.025);
+            this.tone(note * 0.5, 0.14, 'triangle', 0.03, 0, true);
             if (this.noteIdx % 2 === 0 && playerSpeedRatio > 0.2) {
-              this.tone(75 + playerSpeedRatio * 95, 0.12, 'sawtooth', 0.016);
+              this.tone(75 + playerSpeedRatio * 95, 0.12, 'sawtooth', 0.018, 0, true);
             }
           }
         }
       };
 
       // =========================================================================
-      // 3. 5 TOY RACERS & 5 DISTINCT LOW-POLY WORLDS
+      // 4. 5 TOY RACERS & 5 DISTINCT LOW-POLY WORLDS
       // =========================================================================
       const RACERS = [
         {
@@ -1281,15 +1761,16 @@
       ];
 
       // =========================================================================
-      // 4. MAIN GAME ENGINE
+      // 5. MAIN GAME ENGINE
       // =========================================================================
       const Game = {
         mode: 'gp', // 'gp' or 'tt'
         state: 'title',
+        prevScreenBeforeSettings: 'title',
         selectedRacerIdx: 0,
         selectedTrackIdx: 0,
+        builtTrackId: null,
         focusIndex: 0,
-        autoGas: true,
         bestLaps: {},
         roadHalfWidth: 9.5,
 
@@ -1321,6 +1802,8 @@
         start() {
           MyPCBridge.bootImmediate();
           this.buildSelectionCards();
+          this.renderMappingList();
+          this.syncSettingsUI();
           this.bindDOMClicks();
           this.initThree();
           this.initParticles();
@@ -1329,8 +1812,11 @@
           }
           this.showScreen('title');
 
-          // Load saved lap records asynchronously without blocking startup
-          this.loadBestLaps().then(() => {
+          // Load saved settings and lap records asynchronously
+          this.loadSavedData().then(() => {
+            this.renderMappingList();
+            this.syncSettingsUI();
+            this.applyGraphicsAndCameraSettings();
             if (this.state === 'track') this.refreshTrackGrid();
           });
 
@@ -1348,7 +1834,15 @@
           requestAnimationFrame(tick);
         },
 
-        async loadBestLaps() {
+        async loadSavedData() {
+          const savedSettings = await MyPCBridge.load('kartracer_settings_v2', null);
+          if (savedSettings && typeof savedSettings === 'object') {
+            Object.assign(UserSettings, savedSettings);
+            if (savedSettings.bindings) {
+              UserSettings.bindings = Object.assign(getDefaultBindings(), savedSettings.bindings);
+            }
+          }
+
           for (let i = 0; i < TRACKS.length; i++) {
             const id = TRACKS[i].id;
             const val = await MyPCBridge.load('kartracer_bestlap_' + id, null);
@@ -1356,6 +1850,171 @@
               this.bestLaps[id] = Number(val);
             }
           }
+        },
+
+        saveSettings() {
+          MyPCBridge.save('kartracer_settings_v2', UserSettings);
+        },
+
+        applyGraphicsAndCameraSettings() {
+          if (this.camera) {
+            this.camera.fov = UserSettings.cameraFov;
+            this.camera.updateProjectionMatrix();
+          }
+          if (this.renderer) {
+            const ratio = UserSettings.graphicsMode === 'high'
+              ? Math.min(2, window.devicePixelRatio || 1)
+              : 1;
+            this.renderer.setPixelRatio(ratio);
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+          }
+          const mm = document.getElementById('minimap-canvas');
+          if (mm) {
+            mm.style.display = UserSettings.showMinimap ? 'block' : 'none';
+          }
+        },
+
+        formatTokenLabel(tok) {
+          const map = {
+            PAD_A: '🎮 A / OK',
+            PAD_B: '🎮 B',
+            PAD_X: '🎮 X',
+            PAD_Y: '🎮 Y',
+            PAD_LB: '🎮 LB',
+            PAD_RB: '🎮 RB',
+            PAD_LT: '🎮 LT',
+            PAD_RT: '🎮 RT',
+            PAD_START: '🎮 Start',
+            PAD_SELECT: '🎮 Select',
+            PAD_UP: '🎮 D-Up',
+            PAD_DOWN: '🎮 D-Down',
+            PAD_LEFT: '🎮 D-Left',
+            PAD_RIGHT: '🎮 D-Right',
+            AXIS_LX_NEG: '🕹️ Stick Left',
+            AXIS_LX_POS: '🕹️ Stick Right',
+            AXIS_LY_NEG: '🕹️ Stick Up',
+            AXIS_LY_POS: '🕹️ Stick Down',
+            TV_BACK: '📺 TV Back'
+          };
+          if (map[tok]) return map[tok];
+          if (tok.startsWith('Key')) return '⌨️ ' + tok.slice(3);
+          if (tok.startsWith('Digit')) return '⌨️ ' + tok.slice(5);
+          if (tok.startsWith('Arrow')) return '⌨️ ' + tok.slice(5);
+          return tok;
+        },
+
+        renderMappingList() {
+          const container = document.getElementById('mapping-list');
+          if (!container) return;
+          container.innerHTML = '';
+
+          ACTION_META.forEach((act) => {
+            const row = document.createElement('div');
+            row.className = 'mapping-row';
+
+            const title = document.createElement('div');
+            title.className = 'mapping-action-title';
+            title.textContent = act.label;
+
+            const chipsWrap = document.createElement('div');
+            chipsWrap.className = 'mapping-chips';
+
+            const boundList = UserSettings.bindings[act.id] || [];
+            boundList.forEach((tok) => {
+              const chip = document.createElement('span');
+              chip.className = 'key-chip';
+              chip.title = 'Click to remove ' + tok;
+              chip.innerHTML = `<span>${this.formatTokenLabel(tok)}</span><span class="rm-x">&times;</span>`;
+              chip.addEventListener('click', () => {
+                AudioEngine.move();
+                UserSettings.bindings[act.id] = UserSettings.bindings[act.id].filter((t) => t !== tok);
+                this.saveSettings();
+                this.renderMappingList();
+              });
+              chipsWrap.appendChild(chip);
+            });
+
+            const btnGroup = document.createElement('div');
+            btnGroup.className = 'map-btn-group';
+
+            const addBtn = document.createElement('button');
+            const isListening = MyPCBridge.listeningAction === act.id;
+            addBtn.className = 'bind-btn' + (isListening ? ' listening' : '');
+            addBtn.textContent = isListening ? 'Press Any Key/Btn...' : '+ Bind Key / Btn';
+            addBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              AudioEngine.select();
+              MyPCBridge.listeningAction = isListening ? null : act.id;
+              this.renderMappingList();
+            });
+
+            const clrBtn = document.createElement('button');
+            clrBtn.className = 'bind-btn';
+            clrBtn.style.borderColor = 'rgba(255,255,255,0.28)';
+            clrBtn.style.color = '#dfd9f2';
+            clrBtn.style.background = 'rgba(255,255,255,0.08)';
+            clrBtn.textContent = 'Clear';
+            clrBtn.addEventListener('click', () => {
+              AudioEngine.move();
+              UserSettings.bindings[act.id] = [];
+              this.saveSettings();
+              this.renderMappingList();
+            });
+
+            btnGroup.appendChild(addBtn);
+            btnGroup.appendChild(clrBtn);
+
+            row.appendChild(title);
+            row.appendChild(chipsWrap);
+            row.appendChild(btnGroup);
+            container.appendChild(row);
+          });
+        },
+
+        completeKeyBind(actionId, token) {
+          if (!Array.isArray(UserSettings.bindings[actionId])) {
+            UserSettings.bindings[actionId] = [];
+          }
+          if (!UserSettings.bindings[actionId].includes(token)) {
+            UserSettings.bindings[actionId].push(token);
+          }
+          AudioEngine.select();
+          this.saveSettings();
+          this.renderMappingList();
+          this.showToast(`BOUND ${this.formatTokenLabel(token)}!`);
+        },
+
+        syncSettingsUI() {
+          const setTxt = (id, txt) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = txt;
+          };
+          setTxt('set-autogas', UserSettings.autoGas ? 'ON' : 'OFF');
+          setTxt('set-sens', Math.round(UserSettings.steerSensitivity * 100) + '%');
+          setTxt(
+            'set-diff',
+            UserSettings.aiDifficulty === 'easy'
+              ? 'CHILL (50cc)'
+              : UserSettings.aiDifficulty === 'hard'
+              ? 'TURBO PRO (150cc)'
+              : 'NORMAL (100cc)'
+          );
+          setTxt('set-sound', UserSettings.soundEnabled ? 'ON' : 'OFF');
+          setTxt('set-musicvol', Math.round(UserSettings.musicVolume * 100) + '%');
+          setTxt('set-sfxvol', Math.round(UserSettings.sfxVolume * 100) + '%');
+          setTxt(
+            'set-fov',
+            UserSettings.cameraFov === 55
+              ? 'CLOSE (55°)'
+              : UserSettings.cameraFov === 72
+              ? 'WIDE TURBO (72°)'
+              : 'NORMAL (62°)'
+          );
+          setTxt('set-gfx', UserSettings.graphicsMode === 'high' ? 'HIGH DPI' : 'TV PERFORMANCE');
+          setTxt('set-minimap', UserSettings.showMinimap ? 'ON' : 'OFF');
+          setTxt('set-deadzone', Math.round(UserSettings.stickDeadzone * 100) + '%');
+          setTxt('btn-sound', 'Sound & Music: ' + (UserSettings.soundEnabled ? 'ON' : 'OFF'));
+          setTxt('hud-btn-mute', UserSettings.soundEnabled ? '🔊' : '🔇');
         },
 
         initThree() {
@@ -1560,25 +2219,116 @@
               this.mode = 'tt';
               this.showScreen('racer');
               break;
+            case 'open-settings':
+              this.prevScreenBeforeSettings = 'title';
+              this.showScreen('settings');
+              break;
+            case 'open-settings-pause':
+              this.prevScreenBeforeSettings = 'paused';
+              this.showScreen('settings');
+              break;
+            case 'close-settings':
+              MyPCBridge.listeningAction = null;
+              this.saveSettings();
+              this.showScreen(this.prevScreenBeforeSettings || 'title');
+              break;
+            case 'tab-controls':
+              document.getElementById('settings-panel-controls').style.display = 'block';
+              document.getElementById('settings-panel-gameplay').style.display = 'none';
+              document.getElementById('tab-btn-controls').classList.add('active-tab');
+              document.getElementById('tab-btn-gameplay').classList.remove('active-tab');
+              break;
+            case 'tab-gameplay':
+              MyPCBridge.listeningAction = null;
+              document.getElementById('settings-panel-controls').style.display = 'none';
+              document.getElementById('settings-panel-gameplay').style.display = 'block';
+              document.getElementById('tab-btn-controls').classList.remove('active-tab');
+              document.getElementById('tab-btn-gameplay').classList.add('active-tab');
+              break;
+            case 'reset-controls':
+              MyPCBridge.listeningAction = null;
+              UserSettings.bindings = getDefaultBindings();
+              this.saveSettings();
+              this.renderMappingList();
+              this.showToast('CONTROLS RESET TO DEFAULT');
+              break;
+            case 'set-toggle-autogas':
+              UserSettings.autoGas = !UserSettings.autoGas;
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            case 'set-cycle-sens': {
+              const vals = [0.7, 0.85, 1.0, 1.2, 1.4];
+              const idx = (vals.indexOf(UserSettings.steerSensitivity) + 1) % vals.length;
+              UserSettings.steerSensitivity = vals[idx];
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            }
+            case 'set-cycle-diff': {
+              const modes = ['easy', 'normal', 'hard'];
+              const idx = (modes.indexOf(UserSettings.aiDifficulty) + 1) % modes.length;
+              UserSettings.aiDifficulty = modes[idx];
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            }
+            case 'set-toggle-sound':
+            case 'toggle-sound':
+              UserSettings.soundEnabled = !UserSettings.soundEnabled;
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            case 'set-cycle-musicvol': {
+              const vols = [0, 0.4, 0.8, 1.0];
+              const idx = (vols.indexOf(UserSettings.musicVolume) + 1) % vols.length;
+              UserSettings.musicVolume = vols[idx];
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            }
+            case 'set-cycle-sfxvol': {
+              const vols = [0, 0.5, 0.8, 1.0];
+              const idx = (vols.indexOf(UserSettings.sfxVolume) + 1) % vols.length;
+              UserSettings.sfxVolume = vols[idx];
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            }
+            case 'set-cycle-fov': {
+              const fovs = [55, 62, 72];
+              const idx = (fovs.indexOf(UserSettings.cameraFov) + 1) % fovs.length;
+              UserSettings.cameraFov = fovs[idx];
+              this.applyGraphicsAndCameraSettings();
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            }
+            case 'set-cycle-gfx':
+              UserSettings.graphicsMode = UserSettings.graphicsMode === 'tv' ? 'high' : 'tv';
+              this.applyGraphicsAndCameraSettings();
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            case 'set-toggle-minimap':
+              UserSettings.showMinimap = !UserSettings.showMinimap;
+              this.applyGraphicsAndCameraSettings();
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            case 'set-cycle-deadzone': {
+              const dzs = [0.08, 0.15, 0.25];
+              const idx = (dzs.indexOf(UserSettings.stickDeadzone) + 1) % dzs.length;
+              UserSettings.stickDeadzone = dzs[idx];
+              this.syncSettingsUI();
+              this.saveSettings();
+              break;
+            }
             case 'open-howto':
               this.showScreen('howto');
               break;
             case 'open-credits':
               this.showScreen('credits');
-              break;
-            case 'toggle-autogas':
-            case 'toggle-autogas-pause':
-              this.autoGas = !this.autoGas;
-              document.getElementById('btn-autogas').textContent =
-                'TV Remote Auto-Gas: ' + (this.autoGas ? 'ON' : 'OFF');
-              document.getElementById('btn-autogas-pause').textContent =
-                'Auto-Gas: ' + (this.autoGas ? 'ON' : 'OFF');
-              break;
-            case 'toggle-sound':
-              AudioEngine.enabled = !AudioEngine.enabled;
-              document.getElementById('btn-sound').textContent =
-                'Sound & Music: ' + (AudioEngine.enabled ? 'ON' : 'OFF');
-              document.getElementById('hud-btn-mute').textContent = AudioEngine.enabled ? '🔊' : '🔇';
               break;
             case 'back-title':
             case 'quit-title':
@@ -1603,7 +2353,7 @@
         getActiveFocusables() {
           const scr = document.querySelector('.screen.active');
           if (!scr) return [];
-          return Array.from(scr.querySelectorAll('.select-card, .btn'));
+          return Array.from(scr.querySelectorAll('.select-card, .btn, .tab-btn, .setting-ctrl, .bind-btn'));
         },
 
         syncFocusHighlight() {
@@ -1614,7 +2364,9 @@
             const idx = Number(focused.dataset.trackIdx);
             if (idx !== this.selectedTrackIdx) {
               this.selectedTrackIdx = idx;
-              this.buildWorld(TRACKS[idx]);
+              if (this.builtTrackId !== TRACKS[idx].id) {
+                this.buildWorld(TRACKS[idx]);
+              }
             }
           }
         },
@@ -1636,6 +2388,7 @@
               track: 'screen-track',
               howto: 'screen-howto',
               credits: 'screen-credits',
+              settings: 'screen-settings',
               paused: 'screen-pause',
               results: 'screen-results'
             };
@@ -1644,7 +2397,14 @@
             }
             if (name === 'track') {
               this.refreshTrackGrid();
-              this.buildWorld(TRACKS[this.selectedTrackIdx]);
+              const desiredTrack = TRACKS[this.selectedTrackIdx];
+              if (this.builtTrackId !== desiredTrack.id) {
+                this.buildWorld(desiredTrack);
+              }
+            }
+            if (name === 'settings') {
+              this.renderMappingList();
+              this.syncSettingsUI();
             }
             this.focusIndex = 0;
             this.syncFocusHighlight();
@@ -1687,7 +2447,11 @@
           } else if (btn === 'a' || btn === 'start') {
             if (items[this.focusIndex]) items[this.focusIndex].click();
           } else if (btn === 'b') {
-            if (this.state === 'racer' || this.state === 'howto' || this.state === 'credits') {
+            if (this.state === 'settings') {
+              MyPCBridge.listeningAction = null;
+              this.saveSettings();
+              this.showScreen(this.prevScreenBeforeSettings || 'title');
+            } else if (this.state === 'racer' || this.state === 'howto' || this.state === 'credits') {
               this.showScreen('title');
             } else if (this.state === 'track') {
               this.showScreen('racer');
@@ -1706,9 +2470,12 @@
 
         // =========================================================================
         // 6. RICH LOW-POLY WORLD & TRACK BUILDER (5 DISTINCT THEMES)
+        // Uses MeshLambertMaterial without invalid flatShading property so Three.js
+        // r128 logs zero warnings.
         // =========================================================================
         buildWorld(track) {
           if (!this.worldGroup || typeof THREE === 'undefined') return;
+          this.builtTrackId = track.id;
           while (this.worldGroup.children.length > 0) {
             this.worldGroup.remove(this.worldGroup.children[0]);
           }
@@ -1814,7 +2581,7 @@
           gate.position.copy(s0.pt);
           gate.rotation.y = Math.atan2(s0.tan.x, s0.tan.z);
 
-          const pillarMat = new THREE.MeshLambertMaterial({ color: track.curbA, flatShading: true });
+          const pillarMat = new THREE.MeshLambertMaterial({ color: track.curbA });
           const pLeft = new THREE.Mesh(new THREE.BoxGeometry(1.5, 10, 1.5), pillarMat);
           pLeft.position.set(halfW + 0.8, 5, 0);
           const pRight = new THREE.Mesh(new THREE.BoxGeometry(1.5, 10, 1.5), pillarMat);
@@ -1850,7 +2617,7 @@
 
           // Floating Question Item Boxes
           const boxGeo = new THREE.OctahedronGeometry(1.4, 0);
-          const boxMat = new THREE.MeshLambertMaterial({ color: 0xffcc00, flatShading: true });
+          const boxMat = new THREE.MeshLambertMaterial({ color: 0xffcc00 });
           [0.2, 0.46, 0.7, 0.9].forEach((f) => {
             const samp = this.trackSamples[Math.floor(f * segments)];
             [-4.8, 0, 4.8].forEach((lane) => {
@@ -1879,7 +2646,7 @@
           const g = new THREE.Group();
           if (theme === 'canyon') {
             if (seed % 3 === 0) {
-              const mat = new THREE.MeshLambertMaterial({ color: 0x2b9348, flatShading: true });
+              const mat = new THREE.MeshLambertMaterial({ color: 0x2b9348 });
               const trunk = new THREE.Mesh(new THREE.BoxGeometry(1.4, 8.5, 1.4), mat);
               trunk.position.y = 4.25;
               const armL = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.2, 1.2), mat);
@@ -1888,7 +2655,7 @@
               armR.position.set(1.5, 4.0, 0);
               g.add(trunk, armL, armR);
             } else {
-              const mat = new THREE.MeshLambertMaterial({ color: 0xb5441c, flatShading: true });
+              const mat = new THREE.MeshLambertMaterial({ color: 0xb5441c });
               const base = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 6.5, 9, 6), mat);
               base.position.y = 4.5;
               const top = new THREE.Mesh(new THREE.CylinderGeometry(2.8, 4.2, 5, 6), mat);
@@ -1915,7 +2682,7 @@
               new THREE.MeshLambertMaterial({ color: 0x5c4033 })
             );
             trunk.position.y = 1.5;
-            const coneMat = new THREE.MeshLambertMaterial({ color: 0xd8f3dc, flatShading: true });
+            const coneMat = new THREE.MeshLambertMaterial({ color: 0xd8f3dc });
             const c1 = new THREE.Mesh(new THREE.ConeGeometry(3.8, 6.5, 6), coneMat);
             c1.position.y = 5.5;
             const c2 = new THREE.Mesh(new THREE.ConeGeometry(2.7, 5.2, 6), coneMat);
@@ -1930,7 +2697,7 @@
             const candyColor = seed % 2 === 0 ? 0xff477e : 0x00f5d4;
             const pop = new THREE.Mesh(
               new THREE.CylinderGeometry(3.4, 3.4, 1.3, 12),
-              new THREE.MeshLambertMaterial({ color: candyColor, flatShading: true })
+              new THREE.MeshLambertMaterial({ color: candyColor })
             );
             pop.rotation.x = Math.PI / 2;
             pop.position.y = 8.4;
@@ -1939,7 +2706,7 @@
             const crystalColor = seed % 2 === 0 ? 0xffcc00 : 0x9b5de5;
             const crystal = new THREE.Mesh(
               new THREE.OctahedronGeometry(3.6, 0),
-              new THREE.MeshLambertMaterial({ color: crystalColor, flatShading: true })
+              new THREE.MeshLambertMaterial({ color: crystalColor })
             );
             crystal.scale.set(1, 2.4, 1);
             crystal.position.y = 8.5;
@@ -1956,11 +2723,11 @@
           const bodyGroup = new THREE.Group();
           root.add(bodyGroup);
 
-          const primaryMat = new THREE.MeshLambertMaterial({ color: racer.primary, flatShading: true });
-          const secondaryMat = new THREE.MeshLambertMaterial({ color: racer.secondary, flatShading: true });
-          const darkMat = new THREE.MeshLambertMaterial({ color: 0x1a1926, flatShading: true });
-          const chromeMat = new THREE.MeshLambertMaterial({ color: 0xd8dee9, flatShading: true });
-          const helmetMat = new THREE.MeshLambertMaterial({ color: 0xffffff, flatShading: true });
+          const primaryMat = new THREE.MeshLambertMaterial({ color: racer.primary });
+          const secondaryMat = new THREE.MeshLambertMaterial({ color: racer.secondary });
+          const darkMat = new THREE.MeshLambertMaterial({ color: 0x1a1926 });
+          const chromeMat = new THREE.MeshLambertMaterial({ color: 0xd8dee9 });
+          const helmetMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
           const visorMat = new THREE.MeshBasicMaterial({ color: racer.visor });
 
           const pan = new THREE.Mesh(new THREE.BoxGeometry(2.35, 0.35, 3.5), darkMat);
@@ -2131,7 +2898,7 @@
             dropPos.z -= Math.cos(kart.heading) * 3.4;
             const bananaMesh = new THREE.Mesh(
               new THREE.ConeGeometry(0.85, 1.6, 6),
-              new THREE.MeshLambertMaterial({ color: 0xffe600, flatShading: true })
+              new THREE.MeshLambertMaterial({ color: 0xffe600 })
             );
             bananaMesh.position.set(dropPos.x, 0.8, dropPos.z);
             this.worldGroup.add(bananaMesh);
@@ -2144,7 +2911,7 @@
             shellPos.z += Math.cos(kart.heading) * 3.6;
             const shellMesh = new THREE.Mesh(
               new THREE.DodecahedronGeometry(0.95, 0),
-              new THREE.MeshLambertMaterial({ color: 0xff2e63, flatShading: true })
+              new THREE.MeshLambertMaterial({ color: 0xff2e63 })
             );
             shellMesh.position.set(shellPos.x, 0.9, shellPos.z);
             this.worldGroup.add(shellMesh);
@@ -2174,7 +2941,7 @@
             }
           }
 
-          if (['title', 'racer', 'track', 'howto', 'credits'].includes(this.state)) {
+          if (['title', 'racer', 'track', 'howto', 'credits', 'settings'].includes(this.state)) {
             if (this.camera) {
               const angle = performance.now() * 0.00018;
               this.camera.position.set(Math.cos(angle) * 145, 56, Math.sin(angle) * 145 - 125);
@@ -2292,7 +3059,6 @@
         },
 
         updatePlayerPhysics(k, dt) {
-          const inp = MyPCBridge.state;
           const r = k.racer;
 
           if (k.spinTimer > 0) {
@@ -2316,12 +3082,14 @@
             k.bodyGroup.position.y = k.hopY;
           }
 
-          const rawSteer = (inp.left ? 1 : 0) - (inp.right ? 1 : 0) - inp.lx;
-          const steer = Math.max(-1, Math.min(1, rawSteer));
+          const leftVal = MyPCBridge.getActionValue('steerLeft');
+          const rightVal = MyPCBridge.getActionValue('steerRight');
+          const rawSteer = (leftVal - rightVal) * UserSettings.steerSensitivity;
+          const steer = Math.max(-1.25, Math.min(1.25, rawSteer));
 
-          const gas = this.autoGas || inp.up || inp.rt || inp.a || inp.ly < -0.25;
-          const brake = inp.down || inp.lt || inp.ly > 0.35;
-          const driftHeld = inp.rb || inp.x || (inp.a && !k.item && Math.abs(steer) > 0.15);
+          const gas = UserSettings.autoGas || MyPCBridge.isActionHeld('accelerate');
+          const brake = MyPCBridge.isActionHeld('brake');
+          const driftHeld = MyPCBridge.isActionHeld('drift');
 
           let topSpd = r.topSpeed;
           if (k.shrinkTimer > 0) {
@@ -2438,6 +3206,13 @@
 
           k.heading += Math.sign(delta) * Math.min(Math.abs(delta), k.racer.turnRate * 1.2 * dt);
 
+          const diffMult =
+            UserSettings.aiDifficulty === 'easy'
+              ? 0.86
+              : UserSettings.aiDifficulty === 'hard'
+              ? 1.07
+              : 0.97;
+
           let rubberBand = 1.0;
           if (this.playerKart) {
             const diff = this.playerKart.totalProgress - k.totalProgress;
@@ -2445,7 +3220,7 @@
             else if (diff < -25) rubberBand = 0.92;
           }
 
-          const maxSpd = k.racer.topSpeed * k.aiSkill * rubberBand * (k.shrinkTimer > 0 ? 0.72 : 1);
+          const maxSpd = k.racer.topSpeed * k.aiSkill * diffMult * rubberBand * (k.shrinkTimer > 0 ? 0.72 : 1);
           k.speed = Math.min(maxSpd, k.speed + k.racer.accel * 0.92 * dt);
 
           k.mesh.position.x += Math.sin(k.heading) * k.speed * dt;
