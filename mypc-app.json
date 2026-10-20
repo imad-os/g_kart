@@ -1,0 +1,14 @@
+{
+  "mypc": 1,
+  "id": "Kart-Racer",
+  "name": "Kart Racer",
+  "description": "Kart Racer",
+  "type": "game",
+  "entry": "index.html",
+  "icon": "icon.svg",
+  "version": "1.0.0",
+  "scores": true,
+  "config": {
+  },
+  "touch": false
+}
